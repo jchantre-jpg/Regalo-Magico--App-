@@ -2,6 +2,8 @@
 
 Tienda de regalos para comprar por WhatsApp. Proyecto Expo SDK 54.
 
+**Rama de desarrollo:** `dev-juliana-chantre`
+
 ## Ejecutar con Expo Go
 
 ```bash

@@ -1,7 +1,9 @@
 /**
- * Lee imágenes desde ../regalo-magico/public/imagenes y genera catalog.generated.ts
- * Opcional: product-copy-overrides.json (mismo nombre de archivo -> nombre y descripcion).
- * Ejecutar: node scripts/generate-catalog.mjs
+ * 1. Lee metadatos de la tienda web (regalo-magico/src/data/catalog.ts)
+ * 2. Copia cada imagen a assets/catalog/p{id}.ext
+ * 3. Genera lib/catalog.generated.ts con require() + títulos/descripciones reales
+ *
+ * Ejecutar: npm run generate-catalog
  */
 import fs from 'fs';
 import path from 'path';
@@ -10,12 +12,14 @@ import { fileURLToPath } from 'url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const APP_ROOT = path.resolve(__dirname, '..');
 const IMAGENES_DIR = path.join(APP_ROOT, '..', 'regalo-magico', 'public', 'imagenes');
+const WEB_CATALOG_TS = path.join(APP_ROOT, '..', 'regalo-magico', 'src', 'data', 'catalog.ts');
+const ASSETS_DIR = path.join(APP_ROOT, 'assets', 'catalog');
 const OUT_FILE = path.join(APP_ROOT, 'lib', 'catalog.generated.ts');
 const OVERRIDES_FILE = path.join(APP_ROOT, 'product-copy-overrides.json');
 
-const BASE_URL = 'https://ele5-6.apolobyte.top/imagenes';
-
+const REMOTE_IMAGE_BASE = 'https://ele5-6.apolobyte.top/imagenes';
 const EXT_RE = /\.(jpe?g|png|webp|avif)$/i;
+const VALID_CATS = new Set(['desayunos', 'flores', 'chocolates', 'peluches', 'globos', 'personalizados']);
 
 function loadOverrides() {
   if (!fs.existsSync(OVERRIDES_FILE)) return {};
@@ -24,6 +28,59 @@ function loadOverrides() {
   } catch {
     return {};
   }
+}
+
+function normKey(name) {
+  return name.trim().toLowerCase();
+}
+
+/** Parsea PRODUCTOS desde catalog.ts de la web (sin dependencias TS). */
+function parseWebCatalog() {
+  if (!fs.existsSync(WEB_CATALOG_TS)) {
+    console.warn('No se encontró catalog.ts web:', WEB_CATALOG_TS);
+    return [];
+  }
+  const text = fs.readFileSync(WEB_CATALOG_TS, 'utf8');
+  const start = text.indexOf('export const PRODUCTOS = [');
+  const end = text.indexOf('] satisfies', start);
+  if (start < 0 || end < 0) return [];
+
+  const block = text.slice(start, end);
+  const chunks = block.split(/\n  \{ id: /).slice(1);
+  const products = [];
+
+  for (const chunk of chunks) {
+    const body = `{ id: ${chunk}`;
+    const id = Number(/id:\s*(\d+)/.exec(body)?.[1]);
+    const archivo = /fotos:\s*\[\s*['"]\/imagenes\/([^'"]+)['"]\s*\]/.exec(body)?.[1];
+    if (!id || !archivo) continue;
+
+    const nombre =
+      /nombre:\s*'((?:\\'|[^'])*)'/s.exec(body)?.[1]?.replace(/\\'/g, "'") ??
+      /nombre:\s*`([^`]*)`/s.exec(body)?.[1] ??
+      `Producto ${id}`;
+
+    const categoria = /categoria:\s*'([^']+)'/.exec(body)?.[1] ?? 'personalizados';
+    const precio = Number(/precio:\s*(\d+)/.exec(body)?.[1] ?? 45000);
+    const emoji = /emoji:\s*'([^']*)'/.exec(body)?.[1] ?? emojiFor(categoria);
+
+    let descripcion = '';
+    const descTick = body.indexOf('descripcion: `');
+    if (descTick >= 0) {
+      const from = descTick + 'descripcion: `'.length;
+      const to = body.indexOf('`,', from);
+      descripcion = (to >= 0 ? body.slice(from, to) : body.slice(from, body.lastIndexOf('`'))).trim().replace(/\r\n/g, '\n');
+    } else {
+      descripcion =
+        /descripcion:\s*'((?:\\'|[^'])*)'/s.exec(body)?.[1]?.replace(/\\'/g, "'").replace(/\r\n/g, '\n') ??
+        /descripcion:\s*"((?:\\"|[^"])*)"/s.exec(body)?.[1] ??
+        '';
+    }
+
+    products.push({ id, nombre, categoria, precio, emoji, descripcion, archivo });
+  }
+
+  return products;
 }
 
 function guessCategory(filename) {
@@ -85,14 +142,14 @@ function prettyName(file, id, categoria, overrides) {
 
   if (isHashLike(firstPart) || isOnlyDigits(firstPart)) {
     const labels = {
-      desayunos: 'Desayuno o bandeja · ref.',
-      flores: 'Arreglo floral · ref.',
-      chocolates: 'Chocolates o bombones · ref.',
-      peluches: 'Detalle con peluche · ref.',
-      globos: 'Globos y decoración · ref.',
-      personalizados: 'Ancheta o regalo sorpresa · ref.',
+      desayunos: 'Desayuno o bandeja',
+      flores: 'Arreglo floral',
+      chocolates: 'Chocolates o bombones',
+      peluches: 'Detalle con peluche',
+      globos: 'Globos y decoración',
+      personalizados: 'Ancheta o regalo sorpresa',
     };
-    return `${labels[categoria] || 'Regalo · ref.'} ${id}`;
+    return `${labels[categoria] || 'Regalo'} · ref. ${id}`;
   }
 
   if (/^img\s/i.test(base)) {
@@ -103,14 +160,14 @@ function prettyName(file, id, categoria, overrides) {
       .trim();
     if (cleaned.length >= 3 && !isHashLike(cleaned.replace(/[-\s]/g, ''))) {
       const t = titleCaseWords(cleaned);
-      return t.length > 48 ? `${t.slice(0, 46)}…` : t;
+      return t.length > 52 ? `${t.slice(0, 50)}…` : t;
     }
-    return `Foto catalogo · ref. ${id}`;
+    return `Foto catálogo · ref. ${id}`;
   }
 
   let t = titleCaseWords(firstPart);
   t = t.replace(/\s+/g, ' ');
-  if (t.length > 48) t = `${t.slice(0, 46)}…`;
+  if (t.length > 52) t = `${t.slice(0, 50)}…`;
   return t || `Producto · ref. ${id}`;
 }
 
@@ -120,22 +177,162 @@ function prettyDescription(file, categoria, overrides) {
 
   const templates = {
     flores:
-      'Contenido orientativo según la foto:\n• Flores frescas y follaje de temporada\n• Presentación según modelo (jarrón, caja, papel, etc.)\n• Tonos y variedad pueden variar un poco\n\nPara cantidad de tallos, colores exactos y precio, escríbenos por WhatsApp con la referencia del producto.',
+      'Arreglo floral según la foto. Flores y tonos pueden variar según temporada y stock. Escríbenos por WhatsApp con la referencia para confirmar detalles y precio.',
     desayunos:
-      'Contenido orientativo según la foto:\n• Bandeja, caja o canasta decorada\n• Alimentos, bebidas y/o snacks según disponibilidad del día\n• Puede incluir globos, letrero o topper\n\nConfirma ingredientes, horario de entrega y mensaje personalizado por WhatsApp.',
+      'Desayuno o bandeja sorpresa según la foto. Ingredientes y presentación pueden variar según disponibilidad. Coordina horario y mensaje por WhatsApp.',
     chocolates:
-      'Contenido orientativo según la foto:\n• Bombones o chocolates surtidos\n• Caja o empaque según modelo\n\nSabores, marcas y unidades: consúltanos por WhatsApp.',
+      'Caja o selección de chocolates según la foto. Sabores y marcas sujetos a stock — consúltanos por WhatsApp.',
     peluches:
-      'Contenido orientativo según la foto:\n• Peluche u osito\n• Puede incluir globo, dulces o detalle adicional\n\nModelo, tamaño y color sujetos a stock — confirma por WhatsApp.',
+      'Peluche u osito según la foto. Modelo, tamaño y color según stock disponible.',
     globos:
-      'Contenido orientativo según la foto:\n• Globos metalizados, látex o burbuja\n• Mensajes y colores según disponibilidad\n\nMontaje y entrega: coordina por WhatsApp con la referencia.',
+      'Globos o decoración según la foto. Colores y diseños según disponibilidad.',
     personalizados:
-      'Contenido orientativo según la foto:\n• Composición tipo ancheta, canasta o caja regalo\n• Puede incluir peluche, dulces, globos, flores, bebidas u otros detalles\n• Piezas y marcas pueden variar según stock en tienda\n\nListado exacto de lo que incluye tu modelo: escríbenos por WhatsApp indicando la referencia del producto.',
+      'Composición tipo ancheta, canasta o caja regalo según la foto. Piezas según stock en tienda. Pregunta por el contenido exacto por WhatsApp.',
   };
   return templates[categoria] || templates.personalizados;
 }
 
-function main() {
+function assetFileName(id, originalFile) {
+  let ext = path.extname(originalFile).toLowerCase() || '.jpg';
+  if (ext === '.avif') ext = '.jpg';
+  return `p${id}${ext}`;
+}
+
+function buildDiskIndex(files) {
+  const byKey = new Map();
+  for (const f of files) {
+    byKey.set(normKey(f), f);
+  }
+  return byKey;
+}
+
+function applyOverrides(entry, overrides, diskFile) {
+  const o = overrides[diskFile];
+  if (!o) return entry;
+  return {
+    ...entry,
+    nombre: o.nombre ?? entry.nombre,
+    descripcion: o.descripcion ?? entry.descripcion,
+    categoria: o.categoria && VALID_CATS.has(o.categoria) ? o.categoria : entry.categoria,
+    emoji: entry.emoji,
+  };
+}
+
+async function convertToJpeg(src, dest) {
+  try {
+    const sharp = (await import('sharp')).default;
+    await sharp(src).jpeg({ quality: 90 }).toFile(dest);
+    return true;
+  } catch {
+    fs.copyFileSync(src, dest);
+    return false;
+  }
+}
+
+async function syncAssetsDir(entries) {
+  fs.mkdirSync(ASSETS_DIR, { recursive: true });
+  const keep = new Set(entries.map((e) => assetFileName(e.id, e.diskFile)));
+
+  for (const name of fs.readdirSync(ASSETS_DIR)) {
+    if (!keep.has(name)) {
+      fs.unlinkSync(path.join(ASSETS_DIR, name));
+    }
+  }
+
+  let convertedAvif = 0;
+  let mismatches = 0;
+
+  for (const entry of entries) {
+    const destName = assetFileName(entry.id, entry.diskFile);
+    const dest = path.join(ASSETS_DIR, destName);
+    const src = path.join(IMAGENES_DIR, entry.diskFile);
+    const srcExt = path.extname(entry.diskFile).toLowerCase();
+
+    if (srcExt === '.avif') {
+      const ok = await convertToJpeg(src, dest);
+      if (ok) convertedAvif += 1;
+    } else {
+      fs.copyFileSync(src, dest);
+      const srcSize = fs.statSync(src).size;
+      const destSize = fs.statSync(dest).size;
+      if (srcSize !== destSize) {
+        mismatches += 1;
+        fs.copyFileSync(src, dest);
+      }
+    }
+  }
+
+  if (convertedAvif > 0) console.log('AVIF → JPEG:', convertedAvif);
+  if (mismatches > 0) console.warn('Re-copiados por tamaño distinto:', mismatches);
+}
+
+function buildCatalogEntries(files, webProducts, overrides) {
+  const diskIndex = buildDiskIndex(files);
+  const usedFiles = new Set();
+  const entries = [];
+
+  for (const web of webProducts) {
+    const diskFile = diskIndex.get(normKey(web.archivo));
+    if (!diskFile) {
+      console.warn('Web sin archivo en disco:', web.archivo, `(id ${web.id})`);
+      continue;
+    }
+    usedFiles.add(diskFile);
+    entries.push(
+      applyOverrides(
+        {
+          id: web.id,
+          diskFile,
+          archivo: diskFile,
+          nombre: web.nombre,
+          categoria: VALID_CATS.has(web.categoria) ? web.categoria : 'personalizados',
+          precio: web.precio,
+          emoji: web.emoji || emojiFor(web.categoria),
+          descripcion: web.descripcion || prettyDescription(diskFile, web.categoria, overrides),
+          fromWeb: true,
+        },
+        overrides,
+        diskFile
+      )
+    );
+  }
+
+  const maxWebId = entries.length ? Math.max(...entries.map((e) => e.id)) : 0;
+  let nextId = maxWebId + 1;
+
+  const extraFiles = files.filter((f) => !usedFiles.has(f)).sort((a, b) => a.localeCompare(b, undefined, { sensitivity: 'base', numeric: true }));
+
+  for (const diskFile of extraFiles) {
+    let categoria = guessCategory(diskFile);
+    const ovr = overrides[diskFile];
+    if (ovr?.categoria && VALID_CATS.has(ovr.categoria)) categoria = ovr.categoria;
+
+    while (entries.some((e) => e.id === nextId)) nextId += 1;
+
+    entries.push(
+      applyOverrides(
+        {
+          id: nextId++,
+          diskFile,
+          archivo: diskFile,
+          nombre: prettyName(diskFile, nextId - 1, categoria, overrides),
+          categoria,
+          precio: 45000,
+          emoji: emojiFor(categoria),
+          descripcion: prettyDescription(diskFile, categoria, overrides),
+          fromWeb: false,
+        },
+        overrides,
+        diskFile
+      )
+    );
+  }
+
+  entries.sort((a, b) => a.id - b.id);
+  return entries;
+}
+
+async function main() {
   const overrides = loadOverrides();
 
   if (!fs.existsSync(IMAGENES_DIR)) {
@@ -143,16 +340,24 @@ function main() {
     process.exit(1);
   }
 
+  const webProducts = parseWebCatalog();
+  console.log('Productos web (catalog.ts):', webProducts.length);
+
   const files = fs
     .readdirSync(IMAGENES_DIR)
     .filter((f) => EXT_RE.test(f))
-    .filter((f) => !f.toLowerCase().endsWith('.crdownload'))
-    .sort((a, b) => a.localeCompare(b, undefined, { sensitivity: 'base', numeric: true }));
+    .filter((f) => !f.toLowerCase().endsWith('.crdownload'));
+
+  const entries = buildCatalogEntries(files, webProducts, overrides);
+  const webCount = entries.filter((e) => e.fromWeb).length;
+  console.log('Copiando', entries.length, 'imágenes a assets/catalog/ …', `(${webCount} con datos de la web)`);
+  await syncAssetsDir(entries);
 
   const lines = [
     '/**',
     ' * Generado por scripts/generate-catalog.mjs — no editar a mano.',
-    ` * ${files.length} imagenes desde regalo-magico/public/imagenes`,
+    ` * ${entries.length} productos · ${webCount} alineados con regalo-magico/src/data/catalog.ts`,
+    ' * Imágenes empaquetadas en assets/catalog/ (sin depender de internet).',
     ' */',
     "import type { ImageSourcePropType } from 'react-native';",
     '',
@@ -167,42 +372,36 @@ function main() {
     '  image: ImageSourcePropType;',
     '};',
     '',
-    `export const CATALOG_IMAGE_BASE = ${JSON.stringify(BASE_URL)} as const;`,
+    `export const CATALOG_IMAGE_BASE = ${JSON.stringify(REMOTE_IMAGE_BASE)} as const;`,
     '',
     'export const PRODUCTOS: CatalogProduct[] = [',
   ];
 
-  for (let i = 0; i < files.length; i++) {
-    const file = files[i];
-    const id = i + 1;
-    const ovr = overrides[file];
-    let categoria = guessCategory(file);
-    if (ovr?.categoria && ['desayunos', 'flores', 'chocolates', 'peluches', 'globos', 'personalizados'].includes(ovr.categoria)) {
-      categoria = ovr.categoria;
-    }
-    const nombre = prettyName(file, id, categoria, overrides);
-    const precio = 45000;
-    const descripcion = prettyDescription(file, categoria, overrides);
-    const emoji = emojiFor(categoria);
-    const uri = `${BASE_URL}/${encodeURIComponent(file)}`;
+  for (let i = 0; i < entries.length; i++) {
+    const e = entries[i];
+    const assetName = assetFileName(e.id, e.diskFile);
+    const requirePath = `../assets/catalog/${assetName}`;
     const row =
       '  {' +
-      ` id: ${id},` +
-      ` nombre: ${JSON.stringify(nombre)},` +
-      ` categoria: ${JSON.stringify(categoria)},` +
-      ` precio: ${precio},` +
-      ` emoji: ${JSON.stringify(emoji)},` +
-      ` descripcion: ${JSON.stringify(descripcion)},` +
-      ` archivo: ${JSON.stringify(file)},` +
-      ` image: { uri: ${JSON.stringify(uri)} }` +
+      ` id: ${e.id},` +
+      ` nombre: ${JSON.stringify(e.nombre)},` +
+      ` categoria: ${JSON.stringify(e.categoria)},` +
+      ` precio: ${e.precio},` +
+      ` emoji: ${JSON.stringify(e.emoji)},` +
+      ` descripcion: ${JSON.stringify(e.descripcion)},` +
+      ` archivo: ${JSON.stringify(e.archivo)},` +
+      ` image: require(${JSON.stringify(requirePath)})` +
       ' }' +
-      (i < files.length - 1 ? ',' : '');
+      (i < entries.length - 1 ? ',' : '');
     lines.push(row);
   }
 
   lines.push('];', '');
   fs.writeFileSync(OUT_FILE, lines.join('\n'), 'utf8');
-  console.log('OK:', OUT_FILE, `(${files.length} productos)`);
+  console.log('OK:', OUT_FILE);
 }
 
-main();
+main().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});

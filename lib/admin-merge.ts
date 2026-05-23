@@ -7,7 +7,13 @@ export type StoreProduct = CatalogProduct & {
   descripcionAdicional?: string;
   stock?: number;
   fromCustom?: boolean;
+  /** Todas las fotos del producto (admin); la primera es `image` */
+  imageUris?: string[];
 };
+
+function isBundledSource(img: ImageSourcePropType): boolean {
+  return typeof img === 'number';
+}
 
 function isUriSource(img: ImageSourcePropType): img is { uri: string } {
   return typeof img === 'object' && img !== null && 'uri' in img && typeof (img as { uri: string }).uri === 'string';
@@ -24,11 +30,14 @@ export function mergeCatalog(base: CatalogProduct[], data: AdminPersisted | null
 }
 
 function mergeOne(p: CatalogProduct, o: ProductOverride | undefined): StoreProduct {
-  if (!o) return { ...p };
-  const image =
-    o.imageUris?.[0] != null
-      ? { uri: o.imageUris[0] }
-      : p.image;
+  if (!o) {
+    if (isBundledSource(p.image)) return { ...p };
+    const uris = isUriSource(p.image) ? [p.image.uri] : undefined;
+    return uris ? { ...p, imageUris: uris } : { ...p };
+  }
+  const imageUris =
+    o.imageUris?.length ? o.imageUris : isUriSource(p.image) ? [p.image.uri] : undefined;
+  const image = imageUris?.[0] != null ? { uri: imageUris[0] } : p.image;
   return {
     ...p,
     nombre: o.nombre ?? p.nombre,
@@ -39,6 +48,7 @@ function mergeOne(p: CatalogProduct, o: ProductOverride | undefined): StoreProdu
     descripcionAdicional: o.descripcionAdicional,
     stock: o.stock,
     image,
+    imageUris,
   };
 }
 
@@ -56,6 +66,7 @@ function customToStore(c: CustomProductRecord): StoreProduct {
     stock: c.stock,
     archivo: `custom-${c.id}`,
     image,
+    imageUris: c.imageUris.length ? c.imageUris : undefined,
     fromCustom: true,
   };
 }

@@ -1,38 +1,76 @@
-{
-  "IMG_20220929_115400-scaled.jpg": {
-    "nombre": "Desayuno El Mejor Papa",
-    "descripcion": "Bandeja sorpresa con globos, taza personalizada, snacks y detalles para celebrar a papa. Contenido segun disponibilidad en tienda."
-  },
-  "IMG_0504-min.jpg": {
-    "nombre": "Desayuno sorpresa con peluche y flores",
-    "descripcion": "Bandeja con peluche, rosas, chocolates y detalles decorativos; ideal para fechas especiales y aniversarios."
-  },
-  "29-rosas-con-girasoles.webp": {
-    "nombre": "Ramo 29 rosas y girasoles",
-    "descripcion": "Ramo floral con rosas y girasoles en tonos calidos; presentacion lista para regalar. Pregunta por colores disponibles."
-  },
-  "Oso-Tus-Sorpresas.jpg": {
-    "nombre": "Osito con corazon",
-    "descripcion": "Peluche con corazon y empaque en celofan con moños; suave y listo para entrega."
-  },
-  "CAJA-DE-MUJER-KINDER.png": {
-    "nombre": "Caja regalo Kinder",
-    "descripcion": "Caja tematica con chocolates Kinder y presentacion para regalo."
-  },
-  "Arreglo-floral-Gerberas-Jade.jpg": {
-    "nombre": "Arreglo rosas y gerberas",
-    "descripcion": "Arreglo floral elegante con rosas y gerberas; ideal para cumpleanos y agradecimientos."
-  },
-  "Caja-Chocolate-Deslizable-XL-scaled.jpg": {
-    "nombre": "Caja chocolate XL",
-    "descripcion": "Caja deslizable tamaño XL con seleccion de chocolates premium."
-  },
-  "Caja-9-bombones.jpg": {
-    "nombre": "Caja 9 bombones",
-    "descripcion": "Caja con bombones surtidos; presentacion ideal para detalle dulce."
-  },
-  "26_Peluche_V1-min.webp": {
-    "nombre": "Peluche V1",
-    "descripcion": "Peluche decorativo con mensaje; modelo sujeto a stock disponible."
-  }
-}
+{
+
+  "IMG_20220929_115400-scaled.jpg": {
+
+    "nombre": "Desayuno El Mejor Papa",
+
+    "descripcion": "Bandeja sorpresa con globos, taza personalizada, snacks y detalles para celebrar a papa. Contenido segun disponibilidad en tienda."
+
+  },
+
+  "IMG_0504-min.jpg": {
+
+    "nombre": "Desayuno sorpresa con peluche y flores",
+
+    "descripcion": "Bandeja con peluche, rosas, chocolates y detalles decorativos; ideal para fechas especiales y aniversarios."
+
+  },
+
+  "29-rosas-con-girasoles.webp": {
+
+    "nombre": "Ramo 29 rosas y girasoles",
+
+    "descripcion": "Ramo floral con rosas y girasoles en tonos calidos; presentacion lista para regalar. Pregunta por colores disponibles."
+
+  },
+
+  "Oso-Tus-Sorpresas.jpg": {
+
+    "nombre": "Osito con corazon",
+
+    "descripcion": "Peluche con corazon y empaque en celofan con moños; suave y listo para entrega."
+
+  },
+
+  "CAJA-DE-MUJER-KINDER.png": {
+
+    "nombre": "Caja regalo Kinder",
+
+    "descripcion": "Caja tematica con chocolates Kinder y presentacion para regalo."
+
+  },
+
+  "Arreglo-floral-Gerberas-Jade.jpg": {
+
+    "nombre": "Arreglo rosas y gerberas",
+
+    "descripcion": "Arreglo floral elegante con rosas y gerberas; ideal para cumpleanos y agradecimientos."
+
+  },
+
+  "Caja-Chocolate-Deslizable-XL-scaled.jpg": {
+
+    "nombre": "Caja chocolate XL",
+
+    "descripcion": "Caja deslizable tamaño XL con seleccion de chocolates premium."
+
+  },
+
+  "Caja-9-bombones.jpg": {
+
+    "nombre": "Caja 9 bombones",
+
+    "descripcion": "Caja con bombones surtidos; presentacion ideal para detalle dulce."
+
+  },
+
+  "26_Peluche_V1-min.webp": {
+
+    "nombre": "Peluche V1",
+
+    "descripcion": "Peluche decorativo con mensaje; modelo sujeto a stock disponible."
+
+  }
+
+}
+

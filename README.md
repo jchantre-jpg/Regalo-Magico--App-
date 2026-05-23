@@ -32,7 +32,10 @@ Escanea el QR con **Expo Go** (misma red Wi‑Fi que el PC).
 npm run generate-catalog
 ```
 
-Genera `lib/catalog.generated.ts` desde `../regalo-magico/public/imagenes`.
+- Copia todas las fotos de `../regalo-magico/public/imagenes` a `assets/catalog/`
+- Usa **título, precio, categoría y descripción** de `../regalo-magico/src/data/catalog.ts` (igual que la web)
+- Genera `lib/catalog.generated.ts` con imágenes empaquetadas (funciona sin internet)
+- Ajustes extra por archivo: `product-copy-overrides.json`
 
 ## Variables de entorno (opcional)
 

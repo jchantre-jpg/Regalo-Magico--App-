@@ -1,0 +1,893 @@
+[
+  {
+    "id": 1,
+    "nombre": "Desayuno Sorpresa \"Reina Mamá\"",
+    "categoria": "desayunos",
+    "precio": 65000,
+    "emoji": "👑",
+    "descripcion": "🎀 Desayuno Sorpresa \"Reina Mamá\" 🎀\n\nUn detalle lleno de amor, dulzura y elegancia para sorprender desde el primer momento del día. 💕\n\nEste hermoso desayuno incluye:\n🧸 1 Tierno oso de peluche con corona, perfecto para recordarle que es la reina del hogar.\n🍫 1 Cajita con deliciosos chocolates Ferrero Rocher para endulzar su mañana.\n🌸 Finas flores en tonos rosados que aportan un toque romántico y delicado.\n🥤 1 Vaso decorado especial para mamá.\n🎁 Presentación premium en caja redonda con moño elegante en tonos rosa y dorado.\n\nIdeal para celebrar el Día de la Madre, cumpleaños o simplemente para decir \"Te amo, mamá\" de una manera inolvidable. 👑💝\n\nSorprende, emociona y crea un momento mágico desde el amanecer. 🌅",
+    "fotos": [
+      "/imagenes/1.jpeg"
+    ]
+  },
+  {
+    "id": 2,
+    "nombre": "Desayuno Sorpresa \"El Mejor Papá\"",
+    "categoria": "desayunos",
+    "precio": 85000,
+    "emoji": "👨",
+    "descripcion": "💙🎈 Desayuno Sorpresa \"El Mejor Papá\" 🎈💙\n\nSorprende a papá desde el primer momento del día con un detalle lleno de sabor, amor y celebración. 🥳\n\nEste increíble desayuno incluye:\n\n🥪 1 Sándwich fresco y delicioso\n🥐 4 Croissants recién horneados\n🧇 4 Mini waffles con frutas y Nutella\n🍓 1 Parfait de yogur con granola y frutas\n🥜 1 cajita con mix de frutos secos\n🍺 1 Cerveza Corona\n☕ 1 Bebida tipo café frío estilo Starbucks\n🎈 1 Globo metálico \"Happy Father's Day\"\n🎉 Decoración con globos en tonos azul y dorado\n☕ 1 Mug especial \"Te amo, Papá\"\n💌 Mensajes personalizados y detalles decorativos\n🧺 Presentación en bandeja decorada lista para regalar\n\nUn regalo perfecto para el Día del Padre, cumpleaños o simplemente para recordarle que es el mejor del mundo. 🌍💙\n\nHaz que su mañana sea inolvidable con un desayuno lleno de detalles que enamoran. ✨",
+    "fotos": [
+      "/imagenes/2.jpeg"
+    ]
+  },
+  {
+    "id": 3,
+    "nombre": "Desayuno Sorpresa Cumpleaños",
+    "categoria": "desayunos",
+    "precio": 125000,
+    "emoji": "🎂",
+    "descripcion": "🎂 Desayuno Sorpresa Cumpleaños 🎂\n\nHermosa caja decorativa color blanco y rosado con mensaje \"Happy Birthday\" al frente y detalle personalizado con el nombre.\n\nIncluye:\n🥐 Croissants\n🍩 Donas glaseadas\n🥖 Panes artesanales\n🍫 Brownies de chocolate\n🍓 Fresas frescas\n🍯 Mini frascos de mermelada\n🧃 Pequeños jugos en botella\n🎈 Globo decorativo rosado con efecto brillante\n\nPresentación elegante y especial, ideal para sorprender en cumpleaños. 💝",
+    "fotos": [
+      "/imagenes/3.jpeg"
+    ]
+  },
+  {
+    "id": 4,
+    "nombre": "Desayuno Sorpresa \"Birthday Gold Black\"",
+    "categoria": "desayunos",
+    "precio": 45000,
+    "emoji": "🖤",
+    "descripcion": "🎉 Desayuno Sorpresa \"Birthday Gold Black\" 🎉\n\nUn detalle elegante, moderno y lleno de estilo para celebrar un cumpleaños inolvidable desde el primer momento del día. 🖤✨\n\nEste espectacular desayuno incluye:\n🎈 Arreglo de globos en tonos negro y dorado con mensaje personalizado \"Happy Birthday\".\n🧃 Botella de jugo natural decorada con moño elegante.\n🍰 Deliciosa porción de torta, perfecta para celebrar.\n🍬 Variedad de dulces y snacks seleccionados para disfrutar cada momento.\n🥜 Frutos secos y golosinas en presentación premium.\n🎁 Caja de lujo decorada en tonos negro y dorado con acabados elegantes.\n💌 Tarjeta personalizada con nombre y edad para hacerlo aún más especial.\n\nIdeal para sorprender en cumpleaños, especialmente celebraciones de 18 años o fechas importantes. 🥳\n\nSorprende, emociona y crea un momento único que jamás olvidará. 🌟\n\nPersonalizable con nombre, edad y mensaje especial. 💛",
+    "fotos": [
+      "/imagenes/4.jpeg"
+    ]
+  },
+  {
+    "id": 19,
+    "nombre": "Peluches con corazones",
+    "categoria": "peluches",
+    "precio": 45000,
+    "emoji": "🧸",
+    "descripcion": "Colección de peluches con corazones y mensajes de amor. Osos en blanco, café y gris con detalles en rojo. Ideal para cumpleaños, San Valentín o aniversario.",
+    "fotos": [
+      "/imagenes/WhatsApp Image 2026-02-26 at 10.33.32 AM.jpeg"
+    ]
+  },
+  {
+    "id": 20,
+    "nombre": "Osos blancos I Love You",
+    "categoria": "peluches",
+    "precio": 52000,
+    "emoji": "❤️",
+    "descripcion": "Par de adorables osos de peluche blancos sosteniendo corazones de lentejuelas con el mensaje \"I ❤️ YOU\". Perfecto para regalo de amor o cumpleaños.",
+    "fotos": [
+      "/imagenes/WhatsApp Image 2026-02-26 at 10.33.33 AM.jpeg"
+    ]
+  },
+  {
+    "id": 21,
+    "nombre": "Variedad de peluches",
+    "categoria": "peluches",
+    "precio": 38000,
+    "emoji": "🧸",
+    "descripcion": "Peluches para toda ocasión: osos con gorro de graduación, Santa, rosas, corazones y diseños personalizados. Variedad de tamaños y colores.",
+    "fotos": [
+      "/imagenes/WhatsApp Image 2026-02-26 at 10.33.34 AM.jpeg"
+    ]
+  },
+  {
+    "id": 22,
+    "nombre": "Arreglo floral con peluche",
+    "categoria": "flores",
+    "precio": 95000,
+    "emoji": "🌸",
+    "descripcion": "Bouquet con flores variadas (aves del paraíso, rosas, girasoles, orquídeas, lilas) y osito blanco con remera \"LOVE\". Incluye tarjeta personalizada. Ideal para cumpleaños o día especial.",
+    "fotos": [
+      "/imagenes/WhatsApp Image 2026-02-26 at 10.33.41 AM.jpeg"
+    ]
+  },
+  {
+    "id": 23,
+    "nombre": "Tulipanes rojos con globo y chocolates",
+    "categoria": "flores",
+    "precio": 78000,
+    "emoji": "🌷",
+    "descripcion": "Ramo de tulipanes rojos en vaso con moño, globo corazón \"I Love You\", peluche pequeño y caja de Ferrero Rocher. Arreglo romántico para declarar amor o celebrar.",
+    "fotos": [
+      "/imagenes/WhatsApp Image 2026-02-26 at 10.33.45 AM.jpeg"
+    ]
+  },
+  {
+    "id": 24,
+    "nombre": "Caja elefante Sueño Contigo",
+    "categoria": "personalizados",
+    "precio": 65000,
+    "emoji": "🐘",
+    "descripcion": "Elefante de peluche gris con corazón rojo \"Sueño Contigo\", globo \"Love You\", chocolates y golosinas. Caja decorada con osito. Regalo romántico o decoración de habitación.",
+    "fotos": [
+      "/imagenes/WhatsApp Image 2026-02-26 at 10.33.47 AM.jpeg"
+    ]
+  },
+  {
+    "id": 25,
+    "nombre": "Ramos rosas + peluche + Feliz Cumpleaños",
+    "categoria": "flores",
+    "precio": 88000,
+    "emoji": "🌹",
+    "descripcion": "Arreglo de cumpleaños: ramo de rosas rojas con lazo, oso de peluche beige, caja de chocolates y globo metálico \"Feliz Cumpleaños\". Regalo completo y elegante.",
+    "fotos": [
+      "/imagenes/WhatsApp Image 2026-02-26 at 10.33.51 AM.jpeg"
+    ]
+  },
+  {
+    "id": 26,
+    "nombre": "Bandeja Feliz Cumple",
+    "categoria": "desayunos",
+    "precio": 72000,
+    "emoji": "🎂",
+    "descripcion": "Bandeja de cumpleaños con arco de globos morados y rosados, waffle o panqueque, jugo de naranja, mermelada, dulces y tarjeta \"FELIZ CUMPLE\". Presentación en bandeja con moño.",
+    "fotos": [
+      "/imagenes/WhatsApp Image 2026-02-26 at 10.33.57 AM.jpeg"
+    ]
+  },
+  {
+    "id": 27,
+    "nombre": "Caja 36 piezas",
+    "categoria": "chocolates",
+    "precio": 42000,
+    "emoji": "🍫",
+    "descripcion": "Caja de chocolates surtidos con 36 piezas. Variedad de sabores para regalar o compartir.",
+    "fotos": [
+      "/imagenes/caja-36-piezas.jpg"
+    ]
+  },
+  {
+    "id": 28,
+    "nombre": "Caja 4 bombones",
+    "categoria": "chocolates",
+    "precio": 15000,
+    "emoji": "🍫",
+    "descripcion": "Elegante caja con 4 bombones seleccionados. Ideal detalle para acompañar un regalo.",
+    "fotos": [
+      "/imagenes/caja-4-bombones-.jpg"
+    ]
+  },
+  {
+    "id": 29,
+    "nombre": "Caja 4 piezas",
+    "categoria": "chocolates",
+    "precio": 12000,
+    "emoji": "🍫",
+    "descripcion": "Chocolates finos en caja de 4 piezas. Presentación premium.",
+    "fotos": [
+      "/imagenes/caja-4-piezas.jpg"
+    ]
+  },
+  {
+    "id": 30,
+    "nombre": "Caja 9 bombones",
+    "categoria": "chocolates",
+    "precio": 28000,
+    "emoji": "🍫",
+    "descripcion": "Caja de 9 bombones de chocolate. Sabores surtidos, perfectos para regalo.",
+    "fotos": [
+      "/imagenes/Caja-9-bombones.jpg"
+    ]
+  },
+  {
+    "id": 31,
+    "nombre": "Chocolates en forma de corazón",
+    "categoria": "chocolates",
+    "precio": 32000,
+    "emoji": "❤️",
+    "descripcion": "Caja blanca con chocolates en forma de corazón y variedad de sabores. Ideal para San Valentín o declaración de amor.",
+    "fotos": [
+      "/imagenes/caja-blanca-chocolates-forma-corazon-variedad-chocolates-sobre-fondo-blanco_116578-1827.avif"
+    ]
+  },
+  {
+    "id": 32,
+    "nombre": "Caja chocolate deslizable XL",
+    "categoria": "chocolates",
+    "precio": 55000,
+    "emoji": "🍫",
+    "descripcion": "Caja de chocolate deslizable tamaño XL. Presentación de lujo para ocasiones especiales.",
+    "fotos": [
+      "/imagenes/Caja-Chocolate-Deslizable-XL-scaled.jpg"
+    ]
+  },
+  {
+    "id": 33,
+    "nombre": "Caja chocolates surtidos",
+    "categoria": "chocolates",
+    "precio": 38000,
+    "emoji": "🍫",
+    "descripcion": "Chocolates surtidos con variedad de sabores. Para disfrutar o regalar.",
+    "fotos": [
+      "/imagenes/caja-chocolates-surtidos-variedad-sabores_168058-780.avif"
+    ]
+  },
+  {
+    "id": 34,
+    "nombre": "Caja de chocolates grande",
+    "categoria": "chocolates",
+    "precio": 48000,
+    "emoji": "🍫",
+    "descripcion": "Caja grande de chocolates surtidos estilo Creme De La Creme. Regalo elegante.",
+    "fotos": [
+      "/imagenes/Caja-de-chocolates-grandes-surtidos-Creme_De_La_Creme.jpg"
+    ]
+  },
+  {
+    "id": 35,
+    "nombre": "Caja de lujo café",
+    "categoria": "chocolates",
+    "precio": 45000,
+    "emoji": "☕",
+    "descripcion": "Caja de lujo con chocolates y temática café. Para amantes del chocolate y el café.",
+    "fotos": [
+      "/imagenes/CAJA-DE-LUJO-CAFE-.jpg"
+    ]
+  },
+  {
+    "id": 36,
+    "nombre": "Caja mujer Kinder",
+    "categoria": "chocolates",
+    "precio": 25000,
+    "emoji": "🍫",
+    "descripcion": "Caja especial Kinder para ella. Chocolate suave y cremoso.",
+    "fotos": [
+      "/imagenes/CAJA-DE-MUJER-KINDER.png"
+    ]
+  },
+  {
+    "id": 37,
+    "nombre": "Caja metal 9 piezas",
+    "categoria": "chocolates",
+    "precio": 35000,
+    "emoji": "🍫",
+    "descripcion": "Chocolates premium en caja metálica de 9 piezas. Reutilizable y elegante.",
+    "fotos": [
+      "/imagenes/caja-metal-9-piezas.webp"
+    ]
+  },
+  {
+    "id": 38,
+    "nombre": "Caja regalo chocolates",
+    "categoria": "chocolates",
+    "precio": 40000,
+    "emoji": "🎁",
+    "descripcion": "Caja regalo de chocolates. Ideal para Navidad o cualquier celebración.",
+    "fotos": [
+      "/imagenes/caja-regalo-de-chocolates-pera-navidad.jpg"
+    ]
+  },
+  {
+    "id": 39,
+    "nombre": "Caja sabores rectangular",
+    "categoria": "chocolates",
+    "precio": 32000,
+    "emoji": "🍫",
+    "descripcion": "Caja rectangular con variedad de sabores. Presentación amarilla, surtida.",
+    "fotos": [
+      "/imagenes/caja-sabores-rectangular-amarilla-1024x1024.jpg"
+    ]
+  },
+  {
+    "id": 40,
+    "nombre": "Caja para elegir bombones",
+    "categoria": "chocolates",
+    "precio": 36000,
+    "emoji": "🍫",
+    "descripcion": "Caja de bombones para elegir. Variedad de rellenos y coberturas.",
+    "fotos": [
+      "/imagenes/cajachocolateselejir.jpg"
+    ]
+  },
+  {
+    "id": 41,
+    "nombre": "Caja de bombones 2024",
+    "categoria": "chocolates",
+    "precio": 42000,
+    "emoji": "🍫",
+    "descripcion": "Caja de bombones artesanales. Edición especial, sabores clásicos y novedosos.",
+    "fotos": [
+      "/imagenes/Cajadebombones232024.webp"
+    ]
+  },
+  {
+    "id": 42,
+    "nombre": "Chocolate corporativo",
+    "categoria": "chocolates",
+    "precio": 38000,
+    "emoji": "🍫",
+    "descripcion": "Chocolates para regalo corporativo. Presentación profesional y elegante.",
+    "fotos": [
+      "/imagenes/chocolate-corporativo.webp"
+    ]
+  },
+  {
+    "id": 43,
+    "nombre": "Caja madera exquisita",
+    "categoria": "chocolates",
+    "precio": 65000,
+    "emoji": "🍫",
+    "descripcion": "Exquisita caja de madera con chocolates seleccionados. Regalo premium.",
+    "fotos": [
+      "/imagenes/detalle-exquisita-caja-madera.webp"
+    ]
+  },
+  {
+    "id": 44,
+    "nombre": "Caja negra chocolates",
+    "categoria": "chocolates",
+    "precio": 52000,
+    "emoji": "🍫",
+    "descripcion": "Caja negra con chocolates de alta gama. Presentación sofisticada.",
+    "fotos": [
+      "/imagenes/exquisita-caja-negra-chocolates.webp"
+    ]
+  },
+  {
+    "id": 45,
+    "nombre": "Box of Chocolates",
+    "categoria": "chocolates",
+    "precio": 35000,
+    "emoji": "🍫",
+    "descripcion": "Clásica caja de chocolates surtidos. Para regalar en cualquier ocasión.",
+    "fotos": [
+      "/imagenes/field_image_pixabay-box-of-chocolates-1024x768.jpg"
+    ]
+  },
+  {
+    "id": 46,
+    "nombre": "Cajas para bombones Litotec",
+    "categoria": "chocolates",
+    "precio": 28000,
+    "emoji": "🍫",
+    "descripcion": "Cajas elegantes para bombones. Variedad de presentaciones.",
+    "fotos": [
+      "/imagenes/Litotec-Cajas-para-bombones.jpg"
+    ]
+  },
+  {
+    "id": 47,
+    "nombre": "Caja suscripción chocolates",
+    "categoria": "chocolates",
+    "precio": 58000,
+    "emoji": "🍫",
+    "descripcion": "Lujosa caja tipo suscripción con chocolates seleccionados. Experiencia gourmet.",
+    "fotos": [
+      "/imagenes/lujosa-caja-suscripcion-chocolates.webp"
+    ]
+  },
+  {
+    "id": 48,
+    "nombre": "Tres cajas corazón",
+    "categoria": "chocolates",
+    "precio": 45000,
+    "emoji": "❤️",
+    "descripcion": "Tres cajas blancas con chocolates en forma de corazón. Set romántico o para regalar a varias personas.",
+    "fotos": [
+      "/imagenes/tres-cajas-blancas-chocolates-forma-corazon-chocolates-variados-sobre-fondo-blanco_116578-1874.avif"
+    ]
+  },
+  {
+    "id": 49,
+    "nombre": "Globo burbuja 60 cm transparente",
+    "categoria": "globos",
+    "precio": 25000,
+    "emoji": "🎈",
+    "descripcion": "Globo tipo burbuja transparente de 60 cm. Ideal para rellenar con confeti, peluches o detalles. Decoración para fiestas y eventos.",
+    "fotos": [
+      "/imagenes/globo-bubbles-burbuja-60cm-transparente.jpg"
+    ]
+  },
+  {
+    "id": 50,
+    "nombre": "Globo burbuja",
+    "categoria": "globos",
+    "precio": 22000,
+    "emoji": "🎈",
+    "descripcion": "Globo burbuja para decoración. Perfecto para cumpleaños, baby shower o sorpresas.",
+    "fotos": [
+      "/imagenes/globo_burbuja3.jpg"
+    ]
+  },
+  {
+    "id": 51,
+    "nombre": "Arreglo de globos",
+    "categoria": "globos",
+    "precio": 38000,
+    "emoji": "🎈",
+    "descripcion": "Arreglo decorativo de globos. Variedad de colores y estilos para tu celebración.",
+    "fotos": [
+      "/imagenes/GH308_a8c5728d-f2f5-4f4b-b34b-41d2eb3c8a48.webp"
+    ]
+  },
+  {
+    "id": 52,
+    "nombre": "Bouquet de globos surtidos",
+    "categoria": "globos",
+    "precio": 35000,
+    "emoji": "🎈",
+    "descripcion": "Bouquet de globos surtidos. Ideal para cumpleaños, aniversarios o regalo sorpresa.",
+    "fotos": [
+      "/imagenes/66_0000_WhatsApp-Image-2022-07-06-at-10.48.13-PM.jpg"
+    ]
+  },
+  {
+    "id": 53,
+    "nombre": "Globos decorativos",
+    "categoria": "globos",
+    "precio": 28000,
+    "emoji": "🎈",
+    "descripcion": "Set de globos decorativos para fiestas. Colores y tamaños variados.",
+    "fotos": [
+      "/imagenes/Foto-22-9-20-13-02-10-scaled.jpg"
+    ]
+  },
+  {
+    "id": 54,
+    "nombre": "Globos para fiesta",
+    "categoria": "globos",
+    "precio": 32000,
+    "emoji": "🎈",
+    "descripcion": "Globos para decorar tu fiesta. Cumpleaños, baby shower o evento especial.",
+    "fotos": [
+      "/imagenes/IMG_2049_8e70eb66-abe8-4f70-9fa5-ece9d3eb4c9d.jpg"
+    ]
+  },
+  {
+    "id": 55,
+    "nombre": "Pack globos metálicos",
+    "categoria": "globos",
+    "precio": 40000,
+    "emoji": "🎈",
+    "descripcion": "Pack de globos metálicos. Brillantes y elegantes para cualquier celebración.",
+    "fotos": [
+      "/imagenes/2a2cb6768c00f3ebdbaba76596470b53.jpg"
+    ]
+  },
+  {
+    "id": 56,
+    "nombre": "Globos cumpleaños",
+    "categoria": "globos",
+    "precio": 30000,
+    "emoji": "🎂",
+    "descripcion": "Globos temáticos de cumpleaños. Colores y diseños para alegrar la fiesta.",
+    "fotos": [
+      "/imagenes/2b60da4a1f33954eb30e2b07d50278fc.jpg"
+    ]
+  },
+  {
+    "id": 57,
+    "nombre": "Set globos colores",
+    "categoria": "globos",
+    "precio": 26000,
+    "emoji": "🎈",
+    "descripcion": "Set de globos en colores variados. Decoración económica y vistosa.",
+    "fotos": [
+      "/imagenes/35a02a8c30a179a716c7f8c259015f9d.jpg"
+    ]
+  },
+  {
+    "id": 58,
+    "nombre": "Globos corazón",
+    "categoria": "globos",
+    "precio": 32000,
+    "emoji": "❤️",
+    "descripcion": "Globos en forma de corazón. Perfectos para San Valentín o declaración de amor.",
+    "fotos": [
+      "/imagenes/459843d98d63ba375571f986affc1102.jpg"
+    ]
+  },
+  {
+    "id": 59,
+    "nombre": "Arreglo globos premium",
+    "categoria": "globos",
+    "precio": 45000,
+    "emoji": "🎈",
+    "descripcion": "Arreglo premium de globos. Presentación lista para regalar o decorar.",
+    "fotos": [
+      "/imagenes/52a53bdc57c41f8dc63d87a5cc3775d0.jpg"
+    ]
+  },
+  {
+    "id": 60,
+    "nombre": "Globos sorpresa",
+    "categoria": "globos",
+    "precio": 38000,
+    "emoji": "🎁",
+    "descripcion": "Globos para arreglos sorpresa. Ideales para cumpleaños o eventos.",
+    "fotos": [
+      "/imagenes/6023b8081767958e8fd2e7792368057a.jpg"
+    ]
+  },
+  {
+    "id": 61,
+    "nombre": "29 rosas con girasoles",
+    "categoria": "flores",
+    "precio": 85000,
+    "emoji": "🌹",
+    "descripcion": "Arreglo con 29 rosas y girasoles. Combinación elegante y alegre para regalar.",
+    "fotos": [
+      "/imagenes/29-rosas-con-girasoles.webp"
+    ]
+  },
+  {
+    "id": 62,
+    "nombre": "75 rosas en arreglo floral",
+    "categoria": "flores",
+    "precio": 185000,
+    "emoji": "🌹",
+    "descripcion": "Espectacular arreglo con 75 rosas rosas. Declaración de amor o aniversario.",
+    "fotos": [
+      "/imagenes/75-Rosas-Rosa-en-Arreglo-Floral.jpg"
+    ]
+  },
+  {
+    "id": 63,
+    "nombre": "Arreglo azul y blanco",
+    "categoria": "flores",
+    "precio": 72000,
+    "emoji": "🌸",
+    "descripcion": "Arreglo floral en tonos azul y blanco. Fresco y elegante para cualquier ocasión.",
+    "fotos": [
+      "/imagenes/Arreglo-Azul-y-Blanco.jpg"
+    ]
+  },
+  {
+    "id": 64,
+    "nombre": "48 rosas redondo",
+    "categoria": "flores",
+    "precio": 95000,
+    "emoji": "🌹",
+    "descripcion": "Arreglo redondo con 48 rosas. Presentación de floristería, impacto visual.",
+    "fotos": [
+      "/imagenes/Arreglo-de-48-Rosas-Redondo-Floreria-La-Fleur-Buceo-Montevideo-Uruguay_1.jpg"
+    ]
+  },
+  {
+    "id": 65,
+    "nombre": "Arreglo girasoles",
+    "categoria": "flores",
+    "precio": 65000,
+    "emoji": "🌻",
+    "descripcion": "Arreglo con girasoles y flores variadas. Alegría y color a domicilio.",
+    "fotos": [
+      "/imagenes/arreglo-de-flores-girasoles-floreriaadomicilio-dot-mx-1.jpg"
+    ]
+  },
+  {
+    "id": 66,
+    "nombre": "Rosas rosadas y blancas",
+    "categoria": "flores",
+    "precio": 78000,
+    "emoji": "🌷",
+    "descripcion": "Arreglo de rosas rosadas y blancas. Romántico y delicado.",
+    "fotos": [
+      "/imagenes/arreglo-de-rosas-rosadas-y-blancas.jpg"
+    ]
+  },
+  {
+    "id": 67,
+    "nombre": "Rosas y gerberas",
+    "categoria": "flores",
+    "precio": 68000,
+    "emoji": "🌸",
+    "descripcion": "Arreglo de rosas y gerberas. Flores frescas con envío a domicilio.",
+    "fotos": [
+      "/imagenes/Arreglo-de-Rosas-y-Gerberas-Floreria-La-FLeur-Envio-de-arreglos-florales-flores-y-plantas-de-interior.jpg"
+    ]
+  },
+  {
+    "id": 68,
+    "nombre": "Arreglo floral 6",
+    "categoria": "flores",
+    "precio": 58000,
+    "emoji": "💐",
+    "descripcion": "Arreglo floral surtido. Ideal para cumpleaños o detalle especial.",
+    "fotos": [
+      "/imagenes/Arreglo-floral-6.jpg"
+    ]
+  },
+  {
+    "id": 69,
+    "nombre": "Arreglo floral clásico Lemon",
+    "categoria": "flores",
+    "precio": 62000,
+    "emoji": "🌸",
+    "descripcion": "Arreglo floral clásico en tonos limón. Fresco y elegante.",
+    "fotos": [
+      "/imagenes/Arreglo-floral-clasico-Lemon.jpg"
+    ]
+  },
+  {
+    "id": 70,
+    "nombre": "Rosas Casablanca Cherry",
+    "categoria": "flores",
+    "precio": 82000,
+    "emoji": "🌹",
+    "descripcion": "Arreglo con rosas Casablanca y Cherry. Blanco y rojo, sofisticado.",
+    "fotos": [
+      "/imagenes/Arreglo-floral-de-Rosas-Casablancas-Cherry.jpg"
+    ]
+  },
+  {
+    "id": 71,
+    "nombre": "Arreglo gerberas Jade",
+    "categoria": "flores",
+    "precio": 55000,
+    "emoji": "🌼",
+    "descripcion": "Arreglo con gerberas en tonos jade. Colorido y alegre.",
+    "fotos": [
+      "/imagenes/Arreglo-floral-Gerberas-Jade.jpg"
+    ]
+  },
+  {
+    "id": 72,
+    "nombre": "Gerberas Jade (variante)",
+    "categoria": "flores",
+    "precio": 52000,
+    "emoji": "🌼",
+    "descripcion": "Arreglo con gerberas Jade. Perfecto para alegrar cualquier espacio.",
+    "fotos": [
+      "/imagenes/Arreglo-floral-Gerberas-Jade (1).jpg"
+    ]
+  },
+  {
+    "id": 73,
+    "nombre": "Rosas, anturios y gerberas",
+    "categoria": "flores",
+    "precio": 92000,
+    "emoji": "🌹",
+    "descripcion": "Arreglo con rosas, anturios Casablanca y gerberas Catalina. Mix premium.",
+    "fotos": [
+      "/imagenes/Arreglo-floral-Rosas-Anturios-Casblanca-y-Gerberas-Catalina.jpg"
+    ]
+  },
+  {
+    "id": 74,
+    "nombre": "Rosas y gerberas Sophie Pink",
+    "categoria": "flores",
+    "precio": 75000,
+    "emoji": "🌸",
+    "descripcion": "Arreglo rosas y gerberas en rosa Sophie. Detalle femenino y delicado.",
+    "fotos": [
+      "/imagenes/Arreglo-Floral-Rosas-y-Gerberas-Sophie-Pink-1200x1716.jpg"
+    ]
+  },
+  {
+    "id": 75,
+    "nombre": "Arreglo floral variado grande",
+    "categoria": "flores",
+    "precio": 105000,
+    "emoji": "💐",
+    "descripcion": "Arreglo floral variado tamaño grande. Muchas flores para impacto máximo.",
+    "fotos": [
+      "/imagenes/Arreglo-Floral-Variado-Grande-EnvA_o-de-flores-y-plantas-FlorerA_a-La-Fleur-Montevideo-Uruguay..jpg"
+    ]
+  },
+  {
+    "id": 76,
+    "nombre": "Ramos rosas y lilium en florero",
+    "categoria": "flores",
+    "precio": 88000,
+    "emoji": "🌷",
+    "descripcion": "Arreglo de rosas y lilium en florero. Elegante para mesa o regalo.",
+    "fotos": [
+      "/imagenes/arreglo-rosas-lilium-florero_1.jpg"
+    ]
+  },
+  {
+    "id": 77,
+    "nombre": "Bouquet 200 rosas rojas",
+    "categoria": "flores",
+    "precio": 285000,
+    "emoji": "🌹",
+    "descripcion": "Espectacular bouquet de 200 rosas rojas. Regalo inolvidable.",
+    "fotos": [
+      "/imagenes/Espectacular-Bouquet-de-200-Rosas-rojas.jpg"
+    ]
+  },
+  {
+    "id": 78,
+    "nombre": "Caja 25 rosas y variedad",
+    "categoria": "flores",
+    "precio": 115000,
+    "emoji": "🌹",
+    "descripcion": "Caja ovalada negra con 25 rosas, tulipanes, ortencias, lisianthus y follajes. Presentación premium.",
+    "fotos": [
+      "/imagenes/caja-ovalada-negra-con-25-rosas-tulipanes-ortencias-lisianthus-y-follajes-finos.jpg"
+    ]
+  },
+  {
+    "id": 79,
+    "nombre": "Mini cofre 36 rosas",
+    "categoria": "flores",
+    "precio": 98000,
+    "emoji": "🌹",
+    "descripcion": "Mini cofre con 36 rosas, hortensias, lisianthus y follajes. Detalle especial.",
+    "fotos": [
+      "/imagenes/mini-cofre-rosita-con-36-rosas-perritoshortensias-lisianthus-y-follajes-finos.jpg"
+    ]
+  },
+  {
+    "id": 80,
+    "nombre": "Orquídea de un tallo",
+    "categoria": "flores",
+    "precio": 45000,
+    "emoji": "🦋",
+    "descripcion": "Orquídea de un tallo. Elegante y duradera, ideal para regalo o decoración.",
+    "fotos": [
+      "/imagenes/Orquidea-de-un-tallo-.jpg"
+    ]
+  },
+  {
+    "id": 81,
+    "nombre": "Arreglo rosas y girasoles a domicilio",
+    "categoria": "flores",
+    "precio": 72000,
+    "emoji": "🌻",
+    "descripcion": "Arreglo floral con rosas y girasoles. Envío a domicilio disponible.",
+    "fotos": [
+      "/imagenes/p_1_4_8_148-Arreglos-Florales-a-Domicilio-Rosas-y-girasoles-Mitu-1.jpg"
+    ]
+  },
+  {
+    "id": 82,
+    "nombre": "Ramo flores arreglo floral",
+    "categoria": "flores",
+    "precio": 58000,
+    "emoji": "💐",
+    "descripcion": "Ramo de flores surtidas. Arreglo floral listo para regalar.",
+    "fotos": [
+      "/imagenes/ramo-flores-arreglo-floral2.webp"
+    ]
+  },
+  {
+    "id": 83,
+    "nombre": "Peluche V1",
+    "categoria": "peluches",
+    "precio": 35000,
+    "emoji": "🧸",
+    "descripcion": "Peluche suave y tierno. Ideal para regalar a niños o como detalle de amor.",
+    "fotos": [
+      "/imagenes/26_Peluche_V1-min.webp"
+    ]
+  },
+  {
+    "id": 84,
+    "nombre": "Ositos con corazón",
+    "categoria": "peluches",
+    "precio": 42000,
+    "emoji": "❤️",
+    "descripcion": "Ositos de peluche con detalle de corazón. Perfectos para San Valentín o cumpleaños.",
+    "fotos": [
+      "/imagenes/ositos_corazon-min.jpg"
+    ]
+  },
+  {
+    "id": 85,
+    "nombre": "Oso de peluche marrón",
+    "categoria": "peluches",
+    "precio": 38000,
+    "emoji": "🧸",
+    "descripcion": "Oso de peluche marrón clásico. Suave y abrazable, regalo para toda ocasión.",
+    "fotos": [
+      "/imagenes/oso-de-peluche-marron.jpg"
+    ]
+  },
+  {
+    "id": 86,
+    "nombre": "Oso Tus Sorpresas",
+    "categoria": "peluches",
+    "precio": 45000,
+    "emoji": "🧸",
+    "descripcion": "Oso de peluche \"Tus Sorpresas\". Ideal para acompañar regalos o sorpresas.",
+    "fotos": [
+      "/imagenes/Oso-Tus-Sorpresas.jpg"
+    ]
+  },
+  {
+    "id": 87,
+    "nombre": "Osos peluche en cajas regalo",
+    "categoria": "peluches",
+    "precio": 52000,
+    "emoji": "🎁",
+    "descripcion": "Osos de peluche presentados en cajas regalo. Listos para regalar con estilo.",
+    "fotos": [
+      "/imagenes/osos-peluche-cajas-regalos_100436-1500.avif"
+    ]
+  },
+  {
+    "id": 88,
+    "nombre": "Osito sobre cojín corazón",
+    "categoria": "peluches",
+    "precio": 48000,
+    "emoji": "❤️",
+    "descripcion": "Osito de peluche sobre cojín en forma de corazón. Regalo romántico y tierno.",
+    "fotos": [
+      "/imagenes/peluche-osito-sobre-cojin-en-forma-de-corazon.jpg"
+    ]
+  },
+  {
+    "id": 89,
+    "nombre": "Peluche pareja beso con foto",
+    "categoria": "peluches",
+    "precio": 55000,
+    "emoji": "💑",
+    "descripcion": "Peluche de pareja besándose con espacio para foto. Regalo personalizado para tu amor.",
+    "fotos": [
+      "/imagenes/peluche-pareja-beso-con-foto-g1.webp"
+    ]
+  },
+  {
+    "id": 90,
+    "nombre": "Peluche perro con corazón",
+    "categoria": "peluches",
+    "precio": 32000,
+    "emoji": "🐕",
+    "descripcion": "Peluche de perro con corazón. Tierno detalle para amantes de los animales.",
+    "fotos": [
+      "/imagenes/peluche-perro-con-corazon.jpg"
+    ]
+  },
+  {
+    "id": 91,
+    "nombre": "Peluche regalo para tu novia",
+    "categoria": "peluches",
+    "precio": 40000,
+    "emoji": "🧸",
+    "descripcion": "Peluche ideal como regalo para ella. Suave y con mensaje de amor.",
+    "fotos": [
+      "/imagenes/peluche-regalo-para-su-novia.jpg"
+    ]
+  },
+  {
+    "id": 92,
+    "nombre": "Peluche tierno",
+    "categoria": "peluches",
+    "precio": 28000,
+    "emoji": "🧸",
+    "descripcion": "Peluche tierno y suave. Perfecto para cumpleaños o detalle especial.",
+    "fotos": [
+      "/imagenes/peluche-tierno_1.webp"
+    ]
+  },
+  {
+    "id": 93,
+    "nombre": "Peluches San Valentín",
+    "categoria": "peluches",
+    "precio": 45000,
+    "emoji": "❤️",
+    "descripcion": "Peluches temáticos San Valentín. Osos y diseños románticos para regalar.",
+    "fotos": [
+      "/imagenes/Peluches-San-Valentn-640x480.jpg"
+    ]
+  },
+  {
+    "id": 94,
+    "nombre": "Variedad de peluches",
+    "categoria": "peluches",
+    "precio": 35000,
+    "emoji": "🧸",
+    "descripcion": "Variedad de peluches para elegir. Diferentes tamaños y diseños.",
+    "fotos": [
+      "/imagenes/peluches.jpg"
+    ]
+  },
+  {
+    "id": 95,
+    "nombre": "Oso de peluche marrón (variante)",
+    "categoria": "peluches",
+    "precio": 38000,
+    "emoji": "🧸",
+    "descripcion": "Oso de peluche marrón. Suave, abrazable y perfecto para regalar.",
+    "fotos": [
+      "/imagenes/oso-de-peluche-marron (1).jpg"
+    ]
+  }
+]

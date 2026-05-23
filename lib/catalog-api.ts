@@ -14,9 +14,12 @@ function normalizeFotoPaths(raw: unknown): string[] {
 
 function toAbsoluteUri(fotoPath: string, imageBase: string): { archivo: string; uri: string } {
   const archivo = fotoPath.replace(/^.*[/\\]/, '');
+  if (fotoPath.startsWith('http://') || fotoPath.startsWith('https://')) {
+    return { archivo, uri: fotoPath };
+  }
   const base = imageBase.replace(/\/$/, '');
-  const path = fotoPath.startsWith('http') ? fotoPath : `${base}/${encodeURIComponent(archivo)}`;
-  return { archivo, uri: path };
+  const encoded = encodeURIComponent(decodeURIComponent(archivo));
+  return { archivo, uri: `${base}/${encoded}` };
 }
 
 export async function fetchCatalogProducts(apiBase: string, imageBase: string): Promise<CatalogProduct[]> {

@@ -2,7 +2,6 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   Alert,
   FlatList,
-  Image,
   KeyboardAvoidingView,
   Linking,
   Platform,
@@ -20,6 +19,7 @@ import { getImageUrisForForm, nextProductId, type StoreProduct } from '../../lib
 import type { AdminPersisted, CustomProductRecord, ProductOverride } from '../../lib/admin-storage';
 import { saveAdminData } from '../../lib/admin-storage';
 import type { CatalogProduct } from '../../lib/catalog.generated';
+import { ProductImage } from '../common/ProductImage';
 import { AdminProductForm, type CategoryOption, type ProductFormPayload } from './AdminProductForm';
 
 type Phase = 'login' | 'list' | 'form';
@@ -296,7 +296,11 @@ export function AdminPanel({
 
   if (phase === 'login') {
     return (
-      <ScrollView contentContainerStyle={styles.loginScroll} keyboardShouldPersistTaps="handled">
+      <ScrollView
+        style={styles.loginScreen}
+        contentContainerStyle={styles.loginScroll}
+        keyboardShouldPersistTaps="handled"
+      >
         <View style={styles.loginCard}>
           <View style={styles.loginBrandRow}>
             <Text style={styles.loginEmoji}>🎁</Text>
@@ -379,7 +383,7 @@ export function AdminPanel({
         keyboardShouldPersistTaps="handled"
         renderItem={({ item }) => (
           <View style={styles.card}>
-            <Image source={item.image} style={styles.cardImg} resizeMode="cover" />
+            <ProductImage source={item.image} emoji={item.emoji} style={styles.cardImg} />
             <View style={styles.cardMid}>
               <Text style={styles.cardName} numberOfLines={2}>
                 {item.nombre}
@@ -409,6 +413,7 @@ function createStyles(scale: number) {
   const r = (n: number) => Math.round(n * scale);
   return StyleSheet.create({
     flex1: { flex: 1 },
+    loginScreen: { flex: 1, backgroundColor: '#0a0908' },
     loginScroll: { flexGrow: 1, justifyContent: 'center', paddingVertical: r(24), paddingHorizontal: r(12) },
     loginCard: {
       backgroundColor: '#141210',
@@ -446,7 +451,7 @@ function createStyles(scale: number) {
     entrarBtnText: { color: '#1a150e', fontWeight: '900', fontSize: r(16) },
     volverBtn: { marginTop: r(14), paddingVertical: r(10) },
     volverBtnText: { color: '#baa98f', fontSize: r(15), fontWeight: '600' },
-    listRoot: { flex: 1, paddingHorizontal: r(12) },
+    listRoot: { flex: 1, paddingHorizontal: r(12), backgroundColor: '#0a0908' },
     listToolbar: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: r(8), marginTop: r(4) },
     toolbarLink: { color: '#d2b06b', fontSize: r(14), fontWeight: '700' },
     listHead: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: r(8) },

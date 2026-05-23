@@ -1,0 +1,7 @@
+{
+  "extends": "expo/tsconfig.base",
+  "compilerOptions": {
+    "strict": true
+  },
+  "exclude": ["_extracted", "_*.py", "_*.tsx", "_*.txt"]
+}

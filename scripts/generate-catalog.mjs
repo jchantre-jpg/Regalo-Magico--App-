@@ -17,10 +17,13 @@ const ASSETS_DIR = path.join(APP_ROOT, 'assets', 'catalog');
 const OUT_FILE = path.join(APP_ROOT, 'database', 'catalog.generated.ts');
 const OVERRIDES_FILE = path.join(APP_ROOT, 'database', 'product-copy-overrides.json');
 
+/** Base remota escrita en catalog.generated.ts (fallback si no hay require local). */
 const REMOTE_IMAGE_BASE = 'https://ele5-6.apolobyte.top/imagenes';
 const EXT_RE = /\.(jpe?g|png|webp|avif)$/i;
+/** Categorías válidas en la app móvil (debe coincidir con backend/constants/categories). */
 const VALID_CATS = new Set(['desayunos', 'flores', 'chocolates', 'peluches', 'globos', 'personalizados']);
 
+/** Textos opcionales por nombre de archivo (product-copy-overrides.json). */
 function loadOverrides() {
   if (!fs.existsSync(OVERRIDES_FILE)) return {};
   try {
@@ -30,6 +33,7 @@ function loadOverrides() {
   }
 }
 
+/** Clave de búsqueda insensible a mayúsculas para cruzar web ↔ disco. */
 function normKey(name) {
   return name.trim().toLowerCase();
 }
@@ -83,6 +87,7 @@ function parseWebCatalog() {
   return products;
 }
 
+/** Categoría heurística por palabras en el nombre del archivo (fotos solo en disco). */
 function guessCategory(filename) {
   const f = filename.toLowerCase();
   if (/desayuno|desayun|caf[eé]|bandeja|taza|mug|pap[aá]|father|padre/.test(f)) return 'desayunos';
@@ -94,6 +99,7 @@ function guessCategory(filename) {
   return 'personalizados';
 }
 
+/** Emoji por categoría para el catálogo generado. */
 function emojiFor(cat) {
   const m = {
     desayunos: '🍳',
@@ -106,6 +112,7 @@ function emojiFor(cat) {
   return m[cat] ?? '🎁';
 }
 
+/** Convierte "nombre archivo" → "Nombre Archivo". */
 function titleCaseWords(s) {
   return s
     .split(/\s+/)
@@ -114,6 +121,7 @@ function titleCaseWords(s) {
     .trim();
 }
 
+/** Quita sufijos técnicos (scaled, 11zon, dimensiones) del nombre de archivo. */
 function stripNoiseFromBase(base) {
   return base
     .replace(/\b(scaled|min|11zon|hdr|copy|249x9|webp|jpeg|jpg)\b/gi, '')
@@ -123,15 +131,18 @@ function stripNoiseFromBase(base) {
     .trim();
 }
 
+/** Detecta nombres tipo hash (sin título legible). */
 function isHashLike(s) {
   const t = s.replace(/\s/g, '');
   return /^[a-f0-9]{14,}$/i.test(t);
 }
 
+/** Nombres que son solo números (ref. interna). */
 function isOnlyDigits(s) {
   return /^\d{1,5}$/.test(s.trim());
 }
 
+/** Título visible en tienda: override JSON, nombre limpio o etiqueta por categoría. */
 function prettyName(file, id, categoria, overrides) {
   const o = overrides[file];
   if (o?.nombre) return o.nombre.length > 85 ? `${o.nombre.slice(0, 82)}…` : o.nombre;
@@ -171,6 +182,7 @@ function prettyName(file, id, categoria, overrides) {
   return t || `Producto · ref. ${id}`;
 }
 
+/** Descripción por defecto si no hay override ni texto en catalog.ts web. */
 function prettyDescription(file, categoria, overrides) {
   const o = overrides[file];
   if (o?.descripcion) return o.descripcion;
@@ -192,12 +204,14 @@ function prettyDescription(file, categoria, overrides) {
   return templates[categoria] || templates.personalizados;
 }
 
+/** Nombre en assets/catalog: p{id}.jpg (AVIF se normaliza a .jpg). */
 function assetFileName(id, originalFile) {
   let ext = path.extname(originalFile).toLowerCase() || '.jpg';
   if (ext === '.avif') ext = '.jpg';
   return `p${id}${ext}`;
 }
 
+/** Mapa nombre normalizado → archivo real en public/imagenes. */
 function buildDiskIndex(files) {
   const byKey = new Map();
   for (const f of files) {
@@ -206,6 +220,7 @@ function buildDiskIndex(files) {
   return byKey;
 }
 
+/** Aplica product-copy-overrides.json sobre una fila ya construida. */
 function applyOverrides(entry, overrides, diskFile) {
   const o = overrides[diskFile];
   if (!o) return entry;
@@ -218,6 +233,7 @@ function applyOverrides(entry, overrides, diskFile) {
   };
 }
 
+/** Convierte AVIF a JPEG con sharp; si falla, copia el archivo tal cual. */
 async function convertToJpeg(src, dest) {
   try {
     const sharp = (await import('sharp')).default;
@@ -229,6 +245,7 @@ async function convertToJpeg(src, dest) {
   }
 }
 
+/** Copia o convierte imágenes a assets/catalog y borra assets obsoletos. */
 async function syncAssetsDir(entries) {
   fs.mkdirSync(ASSETS_DIR, { recursive: true });
   const keep = new Set(entries.map((e) => assetFileName(e.id, e.diskFile)));
@@ -266,6 +283,7 @@ async function syncAssetsDir(entries) {
   if (mismatches > 0) console.warn('Re-copiados por tamaño distinto:', mismatches);
 }
 
+/** Une filas de catalog.ts web con imágenes del disco y fotos huérfanas. */
 function buildCatalogEntries(files, webProducts, overrides) {
   const diskIndex = buildDiskIndex(files);
   const usedFiles = new Set();
@@ -300,6 +318,7 @@ function buildCatalogEntries(files, webProducts, overrides) {
   const maxWebId = entries.length ? Math.max(...entries.map((e) => e.id)) : 0;
   let nextId = maxWebId + 1;
 
+  // Imágenes en disco que no están en catalog.ts web → IDs nuevos y título heurístico
   const extraFiles = files.filter((f) => !usedFiles.has(f)).sort((a, b) => a.localeCompare(b, undefined, { sensitivity: 'base', numeric: true }));
 
   for (const diskFile of extraFiles) {
@@ -332,6 +351,7 @@ function buildCatalogEntries(files, webProducts, overrides) {
   return entries;
 }
 
+/** Punto de entrada: lee web + disco, sincroniza assets y escribe catalog.generated.ts. */
 async function main() {
   const overrides = loadOverrides();
 
@@ -377,6 +397,7 @@ async function main() {
     'export const PRODUCTOS: CatalogProduct[] = [',
   ];
 
+  // Cada fila: require() al asset copiado en assets/catalog/
   for (let i = 0; i < entries.length; i++) {
     const e = entries[i];
     const assetName = assetFileName(e.id, e.diskFile);

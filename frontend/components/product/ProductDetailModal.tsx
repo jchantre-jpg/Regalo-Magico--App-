@@ -1,17 +1,23 @@
+/**
+ * Detalle del producto: fotos, descripción y agregar al carrito.
+ */
 import { Modal, Pressable, ScrollView, Text, View } from 'react-native';
 import type { ImageSourcePropType } from 'react-native';
-
 import { ProductImage } from '../common/ProductImage';
 import type { Product } from '../../../backend/types/store';
 import { formatPriceCOP } from '../../../backend/utils/formatPrice';
+import type { AppStyles } from '../../styles/types';
 
 type Props = {
-  styles: Record<string, object>;
+  styles: AppStyles;
+  /** null = modal cerrado (no se renderiza contenido). */
   product: Product | null;
   onClose: () => void;
+  /** Cierra el modal y agrega al carrito. */
   onAddToCart: (product: Product) => void;
 };
 
+/** Galería: URIs del admin, require() empaquetado o imagen única. */
 function productImages(product: Product): ImageSourcePropType[] {
   if (product.imageUris?.length) {
     return product.imageUris.map((uri) => ({ uri }));
@@ -22,12 +28,12 @@ function productImages(product: Product): ImageSourcePropType[] {
   return [product.image];
 }
 
+/** Modal con galería, precio y botón agregar (product null = cerrado). */
 export function ProductDetailModal({ styles, product, onClose, onAddToCart }: Props) {
+  // product === null → modal cerrado (App no monta contenido)
   if (!product) return null;
-
   const images = productImages(product);
   const imageCellStyle = images.length > 1 ? styles.detailImageCell : styles.detailImageCellFull;
-
   return (
     <Modal visible animationType="fade" transparent onRequestClose={onClose}>
       <View style={styles.modalOverlay}>
@@ -54,6 +60,7 @@ export function ProductDetailModal({ styles, product, onClose, onAddToCart }: Pr
               {product.descripcionAdicional ? (
                 <Text style={styles.detailModalDesc}>{product.descripcionAdicional}</Text>
               ) : null}
+              {/* Agrega al carrito y cierra el detalle (useCart abre el modal del carrito) */}
               <Pressable
                 style={styles.detailModalAddBtn}
                 onPress={() => {

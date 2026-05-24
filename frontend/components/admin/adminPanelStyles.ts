@@ -1,0 +1,105 @@
+/**
+ * Estilos del panel admin (login, lista y tarjetas de producto).
+ */
+import { StyleSheet } from 'react-native';
+
+/** Genera StyleSheet del panel admin con factor de escala responsive. */
+export function createAdminPanelStyles(scale: number) {
+  /** Escala píxeles del panel admin (tipografía, paddings, bordes). */
+  const r = (n: number) => Math.round(n * scale);
+  return StyleSheet.create({
+    flex1: { flex: 1 },
+    loginScreen: { flex: 1, backgroundColor: '#0a0908' },
+    loginScroll: { flexGrow: 1, justifyContent: 'center', paddingVertical: r(24), paddingHorizontal: r(12) },
+    loginCard: {
+      backgroundColor: '#141210',
+      borderRadius: r(18),
+      borderWidth: 1,
+      borderColor: '#3d3427',
+      padding: r(20),
+    },
+    loginBrandRow: { flexDirection: 'row', alignItems: 'center', gap: r(12) },
+    loginEmoji: { fontSize: r(36) },
+    loginBrand: { color: '#fff', fontSize: r(24), fontWeight: '800' },
+    loginSub: { color: '#fff', fontSize: r(17), fontWeight: '700', marginTop: r(2) },
+    loginLead: { color: '#9c8f7b', fontSize: r(14), marginTop: r(14), lineHeight: r(20) },
+    fieldLabel: { color: '#f4ead8', fontSize: r(14), fontWeight: '700', marginTop: r(16) },
+    fieldInput: {
+      marginTop: r(8),
+      borderWidth: 1,
+      borderColor: '#5c4d32',
+      borderRadius: r(12),
+      paddingVertical: r(13),
+      paddingHorizontal: r(14),
+      fontSize: r(16),
+      color: '#f4ead8',
+      backgroundColor: '#0f0d0a',
+    },
+    entrarBtn: {
+      marginTop: r(22),
+      backgroundColor: '#d2b06b',
+      borderRadius: r(12),
+      paddingVertical: r(14),
+      alignItems: 'center',
+      alignSelf: 'flex-start',
+      paddingHorizontal: r(32),
+    },
+    entrarBtnText: { color: '#1a150e', fontWeight: '900', fontSize: r(16) },
+    volverBtn: { marginTop: r(14), paddingVertical: r(10) },
+    volverBtnText: { color: '#baa98f', fontSize: r(15), fontWeight: '600' },
+    // —— Vista listado (tras login) ——
+    listRoot: { flex: 1, paddingHorizontal: r(12), backgroundColor: '#0a0908' },
+    listToolbar: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: r(8), marginTop: r(4) },
+    toolbarLink: { color: '#d2b06b', fontSize: r(14), fontWeight: '700' },
+    listHead: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: r(8) },
+    listCount: { color: '#e8dcc8', fontSize: r(16), fontWeight: '700' },
+    addBtn: {
+      backgroundColor: '#2a2418',
+      borderWidth: 1,
+      borderColor: '#d2b06b',
+      borderRadius: r(10),
+      paddingVertical: r(8),
+      paddingHorizontal: r(14),
+    },
+    addBtnText: { color: '#d2b06b', fontWeight: '800', fontSize: r(14) },
+    search: {
+      borderWidth: 1,
+      borderColor: '#3d3427',
+      borderRadius: r(12),
+      paddingVertical: r(11),
+      paddingHorizontal: r(12),
+      fontSize: r(15),
+      color: '#f4ead8',
+      backgroundColor: '#151515',
+    },
+    searchMeta: { color: '#6a6054', fontSize: r(11), marginTop: r(6), marginBottom: r(6) },
+    list: { flex: 1 },
+    card: {
+      flexDirection: 'row',
+      alignItems: 'flex-start',
+      backgroundColor: '#12100c',
+      borderRadius: r(12),
+      borderWidth: 1,
+      borderColor: '#2a2217',
+      marginBottom: r(10),
+      padding: r(10),
+      gap: r(10),
+    },
+    cardImg: { width: r(52), height: r(52), borderRadius: r(8), backgroundColor: '#1a1814' },
+    cardMid: { flex: 1, minWidth: 0 },
+    cardName: { color: '#f4ead8', fontSize: r(14), fontWeight: '700' },
+    cardMeta: { color: '#7a6f5f', fontSize: r(11), marginTop: r(4) },
+    cardPrice: { color: '#d9b778', fontSize: r(14), fontWeight: '800', marginTop: r(4) },
+    cardActions: { justifyContent: 'center', gap: r(6) },
+    miniBtn: {
+      borderWidth: 1,
+      borderColor: '#d2b06b',
+      borderRadius: r(8),
+      paddingVertical: r(6),
+      paddingHorizontal: r(8),
+    },
+    miniBtnText: { color: '#d2b06b', fontSize: r(11), fontWeight: '800' },
+    miniBtnDanger: { borderWidth: 1, borderColor: '#8b4040', borderRadius: r(8), paddingVertical: r(6), paddingHorizontal: r(8) },
+    miniBtnDangerText: { color: '#e07070', fontSize: r(11), fontWeight: '800' },
+  });
+}

@@ -1,3 +1,7 @@
+/**
+ * Panel admin: login, listado, crear/editar/eliminar productos.
+ * Persiste cambios vía database/admin-storage y actualiza el catálogo en memoria.
+ */
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   Alert,
@@ -8,52 +12,44 @@ import {
   Pressable,
   ScrollView,
   Share,
-  StyleSheet,
   Text,
   TextInput,
   View,
 } from 'react-native';
 
+import { ADMIN_FORM_CATEGORIES } from '../../../backend/constants/admin-form';
 import { ADMIN_PASSWORD, ADMIN_USERNAME } from '../../../backend/lib/admin-config';
-import {
-  catalogProductHasPhoto,
-  getImageUrisForForm,
-  nextProductId,
-  type StoreProduct,
-} from '../../../backend/lib/admin-merge';
+import { catalogProductHasPhoto, getImageUrisForForm, nextProductId } from '../../../backend/lib/admin-merge';
+import type { StoreProduct } from '../../../backend/types/store';
 import type { AdminPersisted, CustomProductRecord, ProductOverride } from '../../../database/admin-storage';
 import { saveAdminData } from '../../../database/admin-storage';
 import type { CatalogProduct } from '../../../database/catalog.generated';
 import { ProductImage } from '../common/ProductImage';
-import { AdminProductForm, type CategoryOption, type ProductFormPayload } from './AdminProductForm';
-
+import { AdminProductForm, type ProductFormPayload } from './AdminProductForm';
+import { createAdminPanelStyles } from './adminPanelStyles';
+/** Flujo interno del panel (máquina de estados simple). */
 type Phase = 'login' | 'list' | 'form';
 
+/** Producto en edición o modo creación. */
 type FormTarget =
   | { kind: 'create' }
   | { kind: 'edit'; product: StoreProduct; isCustom: boolean };
 
 type Props = {
+  /** Si el modal padre está abierto (reinicia login al abrir). */
   visible: boolean;
   scale: number;
   onClose: () => void;
   whatsappNumber: string;
   formatPrice: (value: number) => string;
+  /** Catálogo empaquetado sin cambios del admin (para calcular nextProductId). */
   baseCatalog: CatalogProduct[];
+  /** Lista ya fusionada que ve la tienda. */
   products: StoreProduct[];
   persist: AdminPersisted;
   onPersistChange: (next: AdminPersisted) => void;
 };
-
-const FORM_CATEGORIES: CategoryOption[] = [
-  { id: 'desayunos', label: 'Desayunos' },
-  { id: 'flores', label: 'Flores' },
-  { id: 'chocolates', label: 'Chocolates' },
-  { id: 'peluches', label: 'Peluches' },
-  { id: 'globos', label: 'Globos' },
-  { id: 'personalizados', label: 'Personalizados' },
-];
-
+/** Convierte el formulario en override parcial para productos del catálogo base. */
 function payloadToOverride(p: ProductFormPayload): ProductOverride {
   const uris = p.imageUris.filter(Boolean);
   const o: ProductOverride = {
@@ -68,7 +64,7 @@ function payloadToOverride(p: ProductFormPayload): ProductOverride {
   if (uris.length > 0) o.imageUris = uris;
   return o;
 }
-
+/** Registro completo para productos creados solo en la app (custom). */
 function payloadToCustom(id: number, p: ProductFormPayload): CustomProductRecord {
   return {
     id,
@@ -83,6 +79,7 @@ function payloadToCustom(id: number, p: ProductFormPayload): CustomProductRecord
   };
 }
 
+/** UI del admin: login → listado → formulario (fases en estado local `phase`). */
 export function AdminPanel({
   visible,
   scale,
@@ -94,14 +91,16 @@ export function AdminPanel({
   persist,
   onPersistChange,
 }: Props) {
+  /** Máquina de estados: login → listado → formulario. */
   const [phase, setPhase] = useState<Phase>('login');
   const [user, setUser] = useState('');
   const [pass, setPass] = useState('');
+  /** Filtro de búsqueda en el listado de productos. */
   const [query, setQuery] = useState('');
+  /** Producto en edición o null fuera del formulario. */
   const [formTarget, setFormTarget] = useState<FormTarget | null>(null);
-
-  const styles = useMemo(() => createStyles(scale), [scale]);
-
+  const styles = useMemo(() => createAdminPanelStyles(scale), [scale]);
+  // Al abrir el panel, reiniciar sesión y formulario
   useEffect(() => {
     if (visible) {
       setPhase('login');
@@ -111,7 +110,7 @@ export function AdminPanel({
       setFormTarget(null);
     }
   }, [visible]);
-
+  /** Guarda en AsyncStorage y notifica a App para refrescar el catálogo. */
   const applyPersist = useCallback(
     async (next: AdminPersisted) => {
       await saveAdminData(next);
@@ -119,7 +118,7 @@ export function AdminPanel({
     },
     [onPersistChange]
   );
-
+  /** Valida credenciales locales (admin-config) y pasa a la lista. */
   const tryLogin = () => {
     if (user.trim() === ADMIN_USERNAME && pass === ADMIN_PASSWORD) {
       setPhase('list');
@@ -128,13 +127,13 @@ export function AdminPanel({
     }
     Alert.alert('No se pudo iniciar sesion', 'Usuario o contraseña incorrectos. Revisa admin-config.ts.');
   };
-
+  /** Cierra sesión admin y vuelve a la pantalla de login. */
   const logout = () => {
     setPhase('login');
     setUser('');
     setPass('');
   };
-
+  /** Búsqueda por nombre, id, archivo o categoría. */
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
     if (!q) return products;
@@ -146,28 +145,26 @@ export function AdminPanel({
         p.categoria.toLowerCase().includes(q)
     );
   }, [products, query]);
-
+  /** Abre formulario vacío para producto nuevo (siempre custom, con fotos). */
   const openCreate = () => {
     setFormTarget({ kind: 'create' });
     setPhase('form');
   };
-
+  /** Abre formulario; isCustom define si se edita el array custom o un override. */
   const openEdit = (product: StoreProduct) => {
     setFormTarget({ kind: 'edit', product, isCustom: !!product.fromCustom });
     setPhase('form');
   };
-
+  /** Vuelve al listado sin guardar cambios pendientes del formulario. */
   const cancelForm = () => {
     setFormTarget(null);
     setPhase('list');
   };
-
+  /** Crea custom, actualiza custom o guarda override según el tipo de producto. */
   const saveForm = async (payload: ProductFormPayload) => {
     if (!formTarget) return;
-
     const isCreate = formTarget.kind === 'create';
     const name = payload.nombre.trim();
-
     try {
       if (isCreate) {
         if (payload.imageUris.filter(Boolean).length === 0) {
@@ -185,7 +182,6 @@ export function AdminPanel({
         Alert.alert('Guardado', `"${name}" se agrego al catalogo.`);
         return;
       }
-
       const { product, isCustom } = formTarget;
       if (isCustom) {
         if (payload.imageUris.filter(Boolean).length === 0) {
@@ -203,7 +199,6 @@ export function AdminPanel({
         Alert.alert('Guardado', `Cambios en "${name}" guardados.`);
         return;
       }
-
       const prev = persist.overrides[String(product.id)];
       const o = payloadToOverride(payload);
       const next: AdminPersisted = {
@@ -220,7 +215,7 @@ export function AdminPanel({
       Alert.alert('Error al guardar', 'No se pudieron guardar los cambios. Intenta de nuevo.');
     }
   };
-
+  /** Pide confirmación antes de eliminar del catálogo visible. */
   const confirmDelete = (product: StoreProduct) => {
     Alert.alert(
       'Eliminar producto',
@@ -235,7 +230,7 @@ export function AdminPanel({
       ]
     );
   };
-
+  /** Custom: quita del array; catálogo base: marca id en deletedIds. */
   const deleteProduct = async (product: StoreProduct) => {
     let next: AdminPersisted;
     if (product.fromCustom) {
@@ -251,7 +246,7 @@ export function AdminPanel({
     }
     await applyPersist(next);
   };
-
+  /** Comparte por el sistema un resumen de cantidades por categoría. */
   const shareSummary = async () => {
     const byCat = new Map<string, number>();
     for (const p of products) {
@@ -269,7 +264,7 @@ export function AdminPanel({
       /* cancel */
     }
   };
-
+  /** Valores iniciales del formulario al crear o editar. */
   const initialFormPayload = (target: FormTarget): ProductFormPayload => {
     if (target.kind === 'create') {
       return {
@@ -299,28 +294,26 @@ export function AdminPanel({
       imageUris: imgs.length ? imgs : getImageUrisForForm(product, ov),
     };
   };
-
+  /** Fuerza remount del formulario al cambiar de producto (estado local limpio). */
   const formKey = formTarget
     ? formTarget.kind === 'create'
       ? 'new'
       : `edit-${formTarget.product.id}`
     : 'none';
-
   const keyboardOffset = Platform.OS === 'ios' ? 64 : 0;
-
+  // ——— Vista: formulario crear / editar ———
   if (phase === 'form' && formTarget) {
     const requirePhotos =
       formTarget.kind === 'create' ||
       formTarget.isCustom ||
       !catalogProductHasPhoto(formTarget.product);
-
     return (
       <KeyboardAvoidingView style={styles.flex1} behavior={Platform.OS === 'ios' ? 'padding' : undefined} keyboardVerticalOffset={keyboardOffset}>
         <AdminProductForm
           key={formKey}
           scale={scale}
           title={formTarget.kind === 'create' ? 'Nuevo producto' : 'Editar producto'}
-          categories={FORM_CATEGORIES}
+          categories={ADMIN_FORM_CATEGORIES}
           initial={initialFormPayload(formTarget)}
           requirePhotos={requirePhotos}
           onSave={(p) => void saveForm(p)}
@@ -329,7 +322,7 @@ export function AdminPanel({
       </KeyboardAvoidingView>
     );
   }
-
+  // ——— Vista: login ———
   if (phase === 'login') {
     return (
       <ScrollView
@@ -375,7 +368,7 @@ export function AdminPanel({
       </ScrollView>
     );
   }
-
+  // ——— Vista: listado con búsqueda ———
   return (
     <View style={styles.listRoot}>
       <View style={styles.listToolbar}>
@@ -389,14 +382,12 @@ export function AdminPanel({
           <Text style={styles.toolbarLink}>WhatsApp</Text>
         </Pressable>
       </View>
-
       <View style={styles.listHead}>
         <Text style={styles.listCount}>{products.length} productos</Text>
         <Pressable style={styles.addBtn} onPress={openCreate}>
           <Text style={styles.addBtnText}>+ Nuevo</Text>
         </Pressable>
       </View>
-
       <TextInput
         style={styles.search}
         value={query}
@@ -409,7 +400,7 @@ export function AdminPanel({
       <Text style={styles.searchMeta}>
         Mostrando {filtered.length} de {products.length}
       </Text>
-
+      {/* FlatList virtualizada: muchos productos sin bloquear el hilo UI */}
       <FlatList
         data={filtered}
         keyExtractor={(item) => String(item.id)}
@@ -443,102 +434,4 @@ export function AdminPanel({
       />
     </View>
   );
-}
-
-function createStyles(scale: number) {
-  const r = (n: number) => Math.round(n * scale);
-  return StyleSheet.create({
-    flex1: { flex: 1 },
-    loginScreen: { flex: 1, backgroundColor: '#0a0908' },
-    loginScroll: { flexGrow: 1, justifyContent: 'center', paddingVertical: r(24), paddingHorizontal: r(12) },
-    loginCard: {
-      backgroundColor: '#141210',
-      borderRadius: r(18),
-      borderWidth: 1,
-      borderColor: '#3d3427',
-      padding: r(20),
-    },
-    loginBrandRow: { flexDirection: 'row', alignItems: 'center', gap: r(12) },
-    loginEmoji: { fontSize: r(36) },
-    loginBrand: { color: '#fff', fontSize: r(24), fontWeight: '800' },
-    loginSub: { color: '#fff', fontSize: r(17), fontWeight: '700', marginTop: r(2) },
-    loginLead: { color: '#9c8f7b', fontSize: r(14), marginTop: r(14), lineHeight: r(20) },
-    fieldLabel: { color: '#f4ead8', fontSize: r(14), fontWeight: '700', marginTop: r(16) },
-    fieldInput: {
-      marginTop: r(8),
-      borderWidth: 1,
-      borderColor: '#5c4d32',
-      borderRadius: r(12),
-      paddingVertical: r(13),
-      paddingHorizontal: r(14),
-      fontSize: r(16),
-      color: '#f4ead8',
-      backgroundColor: '#0f0d0a',
-    },
-    entrarBtn: {
-      marginTop: r(22),
-      backgroundColor: '#d2b06b',
-      borderRadius: r(12),
-      paddingVertical: r(14),
-      alignItems: 'center',
-      alignSelf: 'flex-start',
-      paddingHorizontal: r(32),
-    },
-    entrarBtnText: { color: '#1a150e', fontWeight: '900', fontSize: r(16) },
-    volverBtn: { marginTop: r(14), paddingVertical: r(10) },
-    volverBtnText: { color: '#baa98f', fontSize: r(15), fontWeight: '600' },
-    listRoot: { flex: 1, paddingHorizontal: r(12), backgroundColor: '#0a0908' },
-    listToolbar: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: r(8), marginTop: r(4) },
-    toolbarLink: { color: '#d2b06b', fontSize: r(14), fontWeight: '700' },
-    listHead: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: r(8) },
-    listCount: { color: '#e8dcc8', fontSize: r(16), fontWeight: '700' },
-    addBtn: {
-      backgroundColor: '#2a2418',
-      borderWidth: 1,
-      borderColor: '#d2b06b',
-      borderRadius: r(10),
-      paddingVertical: r(8),
-      paddingHorizontal: r(14),
-    },
-    addBtnText: { color: '#d2b06b', fontWeight: '800', fontSize: r(14) },
-    search: {
-      borderWidth: 1,
-      borderColor: '#3d3427',
-      borderRadius: r(12),
-      paddingVertical: r(11),
-      paddingHorizontal: r(12),
-      fontSize: r(15),
-      color: '#f4ead8',
-      backgroundColor: '#151515',
-    },
-    searchMeta: { color: '#6a6054', fontSize: r(11), marginTop: r(6), marginBottom: r(6) },
-    list: { flex: 1 },
-    card: {
-      flexDirection: 'row',
-      alignItems: 'flex-start',
-      backgroundColor: '#12100c',
-      borderRadius: r(12),
-      borderWidth: 1,
-      borderColor: '#2a2217',
-      marginBottom: r(10),
-      padding: r(10),
-      gap: r(10),
-    },
-    cardImg: { width: r(52), height: r(52), borderRadius: r(8), backgroundColor: '#1a1814' },
-    cardMid: { flex: 1, minWidth: 0 },
-    cardName: { color: '#f4ead8', fontSize: r(14), fontWeight: '700' },
-    cardMeta: { color: '#7a6f5f', fontSize: r(11), marginTop: r(4) },
-    cardPrice: { color: '#d9b778', fontSize: r(14), fontWeight: '800', marginTop: r(4) },
-    cardActions: { justifyContent: 'center', gap: r(6) },
-    miniBtn: {
-      borderWidth: 1,
-      borderColor: '#d2b06b',
-      borderRadius: r(8),
-      paddingVertical: r(6),
-      paddingHorizontal: r(8),
-    },
-    miniBtnText: { color: '#d2b06b', fontSize: r(11), fontWeight: '800' },
-    miniBtnDanger: { borderWidth: 1, borderColor: '#8b4040', borderRadius: r(8), paddingVertical: r(6), paddingHorizontal: r(8) },
-    miniBtnDangerText: { color: '#e07070', fontSize: r(11), fontWeight: '800' },
-  });
 }

@@ -1,7 +1,15 @@
 {
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
-    "strict": true
+    "strict": true,
+    "baseUrl": "."
   },
-  "exclude": ["_extracted", "_*.py", "_*.tsx", "_*.txt"]
+  "include": [
+    "index.ts",
+    "frontend/**/*.ts",
+    "frontend/**/*.tsx",
+    "backend/**/*.ts",
+    "database/**/*.ts"
+  ],
+  "exclude": ["node_modules", "scripts", "_extracted"]
 }

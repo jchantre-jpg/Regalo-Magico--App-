@@ -5,8 +5,10 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
+/** Raíz del proyecto regalo-magico-app (carpeta padre de scripts/). */
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
+/** Recorre el árbol del proyecto buscando .ts y .tsx. */
 function walk(dir, acc = []) {
   for (const name of fs.readdirSync(dir)) {
     if (name === 'node_modules' || name === '.git' || name === 'assets') continue;
@@ -18,6 +20,7 @@ function walk(dir, acc = []) {
   return acc;
 }
 
+/** Pares [texto viejo, texto nuevo] tras mover carpetas frontend/backend/database. */
 const replacements = [
   // frontend/components (depth 3 to root)
   ["from '../../lib/admin-storage'", "from '../../../database/admin-storage'"],
@@ -40,6 +43,7 @@ const replacements = [
 ];
 
 let changed = 0;
+// Sustituye rutas de import en cada .ts/.tsx del proyecto
 for (const file of walk(ROOT)) {
   if (file.includes('fix-imports-structure')) continue;
   let text = fs.readFileSync(file, 'utf8');

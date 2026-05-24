@@ -5,6 +5,7 @@
  */
 import type { ImageSourcePropType } from 'react-native';
 
+/** Producto del catálogo empaquetado (generado automáticamente). */
 export type CatalogProduct = {
   id: number;
   nombre: string;
@@ -12,12 +13,15 @@ export type CatalogProduct = {
   precio: number;
   emoji: string;
   descripcion: string;
+  /** Nombre de archivo de la imagen en assets/catalog. */
   archivo: string;
   image: ImageSourcePropType;
 };
 
+/** Base URL de imágenes remotas (fallback si no hay asset local). */
 export const CATALOG_IMAGE_BASE = "https://ele5-6.apolobyte.top/imagenes" as const;
 
+/** Catálogo empaquetado en la app (require por producto). */
 export const PRODUCTOS: CatalogProduct[] = [
   { id: 1, nombre: "Desayuno Sorpresa \"Reina Mamá\"", categoria: "desayunos", precio: 65000, emoji: "👑", descripcion: "🎀 Desayuno Sorpresa \"Reina Mamá\" 🎀\n\nUn detalle lleno de amor, dulzura y elegancia para sorprender desde el primer momento del día. 💕\n\nEste hermoso desayuno incluye:\n🧸 1 Tierno oso de peluche con corona, perfecto para recordarle que es la reina del hogar.\n🍫 1 Cajita con deliciosos chocolates Ferrero Rocher para endulzar su mañana.\n🌸 Finas flores en tonos rosados que aportan un toque romántico y delicado.\n🥤 1 Vaso decorado especial para mamá.\n🎁 Presentación premium en caja redonda con moño elegante en tonos rosa y dorado.\n\nIdeal para celebrar el Día de la Madre, cumpleaños o simplemente para decir \"Te amo, mamá\" de una manera inolvidable. 👑💝\n\nSorprende, emociona y crea un momento mágico desde el amanecer. 🌅", archivo: "1.jpeg", image: require("../assets/catalog/p1.jpeg") },
   { id: 2, nombre: "Desayuno Sorpresa \"El Mejor Papá\"", categoria: "desayunos", precio: 85000, emoji: "👨", descripcion: "💙🎈 Desayuno Sorpresa \"El Mejor Papá\" 🎈💙\n\nSorprende a papá desde el primer momento del día con un detalle lleno de sabor, amor y celebración. 🥳\n\nEste increíble desayuno incluye:\n\n🥪 1 Sándwich fresco y delicioso\n🥐 4 Croissants recién horneados\n🧇 4 Mini waffles con frutas y Nutella\n🍓 1 Parfait de yogur con granola y frutas\n🥜 1 cajita con mix de frutos secos\n🍺 1 Cerveza Corona\n☕ 1 Bebida tipo café frío estilo Starbucks\n🎈 1 Globo metálico \"Happy Father's Day\"\n🎉 Decoración con globos en tonos azul y dorado\n☕ 1 Mug especial \"Te amo, Papá\"\n💌 Mensajes personalizados y detalles decorativos\n🧺 Presentación en bandeja decorada lista para regalar\n\nUn regalo perfecto para el Día del Padre, cumpleaños o simplemente para recordarle que es el mejor del mundo. 🌍💙\n\nHaz que su mañana sea inolvidable con un desayuno lleno de detalles que enamoran. ✨", archivo: "2.jpeg", image: require("../assets/catalog/p2.jpeg") },

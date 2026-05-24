@@ -1,3 +1,6 @@
+/**
+ * Formulario de producto en admin: campos, categoría y hasta 5 fotos de galería.
+ */
 import * as ImagePicker from 'expo-image-picker';
 import { Image } from 'expo-image';
 import { useMemo, useState } from 'react';
@@ -12,33 +15,37 @@ import {
   TextInput,
   View,
 } from 'react-native';
-
+/** Datos que envía el formulario al guardar (admin). */
 export type ProductFormPayload = {
   nombre: string;
   categoria: string;
   precio: number;
   stock: number;
+  /** Detalle con items y cantidades (visible en tienda). */
   descripcion: string;
   descripcionAdicional: string;
   emoji: string;
+  /** URIs locales (file://) desde expo-image-picker. */
   imageUris: string[];
 };
-
+/** Opción del selector de categoría en el formulario. */
 export type CategoryOption = { id: string; label: string };
 
 type Props = {
   scale: number;
   title: string;
   categories: CategoryOption[];
+  /** Valores al abrir crear/editar (controlado por key en AdminPanel). */
   initial: ProductFormPayload;
   /** Si false, permite guardar sin fotos nuevas (producto del catalogo con imagen empaquetada). */
   requirePhotos?: boolean;
   onSave: (payload: ProductFormPayload) => void;
   onCancel: () => void;
 };
-
+/** Límite de fotos por producto en admin. */
 const MAX_PHOTOS = 5;
 
+/** Formulario crear/editar: validación local y hasta MAX_PHOTOS imágenes. */
 export function AdminProductForm({
   scale,
   title,
@@ -59,7 +66,7 @@ export function AdminProductForm({
   const [imageUris, setImageUris] = useState<string[]>(initial.imageUris);
   const [catModal, setCatModal] = useState(false);
   const [saving, setSaving] = useState(false);
-
+  /** Abre la galería y añade hasta MAX_PHOTOS imágenes. */
   const pickImages = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (status !== 'granted') {
@@ -77,14 +84,13 @@ export function AdminProductForm({
     if (result.canceled || !result.assets?.length) return;
     setImageUris((prev) => [...prev, ...result.assets.map((a) => a.uri)].slice(0, MAX_PHOTOS));
   };
-
+  /** Quita una miniatura de la lista antes de guardar. */
   const removePhoto = (idx: number) => {
     setImageUris((prev) => prev.filter((_, i) => i !== idx));
   };
-
+  /** Valida campos obligatorios y delega el guardado a AdminPanel.saveForm. */
   const submit = () => {
     if (saving) return;
-
     const n = nombre.trim();
     if (!n) {
       Alert.alert('Falta el nombre', 'Indica el nombre del producto.');
@@ -110,7 +116,6 @@ export function AdminProductForm({
       Alert.alert('Fotos', 'Agrega al menos una foto del producto.');
       return;
     }
-
     setSaving(true);
     try {
       onSave({
@@ -127,9 +132,7 @@ export function AdminProductForm({
       setSaving(false);
     }
   };
-
   const catLabel = categories.find((c) => c.id === categoria)?.label ?? 'Seleccionar...';
-
   return (
     <View style={styles.wrap}>
       <View style={styles.formHeader}>
@@ -138,7 +141,6 @@ export function AdminProductForm({
           <Text style={styles.formClose}>✕</Text>
         </Pressable>
       </View>
-
       <ScrollView style={styles.formScroll} keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
         <Text style={styles.label}>Nombre del producto *</Text>
         <TextInput
@@ -148,13 +150,11 @@ export function AdminProductForm({
           placeholder="Ej: Desayuno Sorpresa Premium"
           placeholderTextColor="#5c5348"
         />
-
         <Text style={styles.label}>Categoria *</Text>
         <Pressable style={styles.selectBtn} onPress={() => setCatModal(true)}>
           <Text style={[styles.selectBtnText, categoria ? styles.selectBtnTextOn : styles.selectBtnTextOff]}>{catLabel}</Text>
           <Text style={styles.selectChev}>▼</Text>
         </Pressable>
-
         <Text style={styles.label}>Precio ($) *</Text>
         <TextInput
           style={styles.input}
@@ -164,7 +164,6 @@ export function AdminProductForm({
           placeholderTextColor="#5c5348"
           keyboardType="number-pad"
         />
-
         <Text style={styles.label}>Stock disponible</Text>
         <TextInput
           style={styles.input}
@@ -174,7 +173,6 @@ export function AdminProductForm({
           placeholderTextColor="#5c5348"
           keyboardType="number-pad"
         />
-
         <Text style={styles.label}>Emoji (opcional)</Text>
         <TextInput
           style={styles.input}
@@ -184,7 +182,6 @@ export function AdminProductForm({
           placeholderTextColor="#5c5348"
           maxLength={4}
         />
-
         <Text style={styles.label}>Contenido del detalle (cantidad de cada cosa) *</Text>
         <Text style={styles.hint}>Lista cada item con su cantidad. Usa emojis y formato libre.</Text>
         <TextInput
@@ -195,7 +192,6 @@ export function AdminProductForm({
           placeholderTextColor="#5c5348"
           multiline
         />
-
         <Text style={styles.label}>Descripcion adicional</Text>
         <TextInput
           style={[styles.input, styles.textAreaSm]}
@@ -205,7 +201,6 @@ export function AdminProductForm({
           placeholderTextColor="#5c5348"
           multiline
         />
-
         <Text style={styles.label}>
           Fotos del producto {requirePhotos ? '*' : ''} (max. {MAX_PHOTOS})
         </Text>
@@ -226,12 +221,12 @@ export function AdminProductForm({
                 <Pressable onPress={() => removePhoto(i)} style={styles.thumbRemove}>
                   <Text style={styles.thumbRemoveText}>✕</Text>
                 </Pressable>
+                {/* La primera miniatura es la imagen principal en la tienda */}
                 <Text style={styles.thumbIdx}>{i === 0 ? 'Principal' : `${i + 1}`}</Text>
               </View>
             ))}
           </View>
         ) : null}
-
         <View style={styles.formActions}>
           <Pressable style={styles.btnOutline} onPress={onCancel}>
             <Text style={styles.btnOutlineText}>Cancelar</Text>
@@ -246,7 +241,7 @@ export function AdminProductForm({
         </View>
         <View style={{ height: 28 }} />
       </ScrollView>
-
+      {/* Selector de categoría (modal aparte del formulario principal) */}
       <Modal transparent visible={catModal} animationType="fade" onRequestClose={() => setCatModal(false)}>
         <Pressable style={styles.catOverlay} onPress={() => setCatModal(false)}>
           <View style={styles.catSheet}>
@@ -270,7 +265,9 @@ export function AdminProductForm({
   );
 }
 
+/** Estilos del formulario escalados según ancho de pantalla. */
 function createStyles(scale: number) {
+  /** Misma idea que adminPanelStyles: tamaños proporcionales al ancho. */
   const r = (n: number) => Math.round(n * scale);
   return StyleSheet.create({
     wrap: { flex: 1, backgroundColor: '#0a0a0a' },

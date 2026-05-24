@@ -1,6 +1,22 @@
+/**
+ * Estilos globales de la tienda (generados según escala de pantalla).
+ * Un solo StyleSheet evita recrear objetos en cada render de hijos.
+ */
 import { StyleSheet } from 'react-native';
 
-export function createAppStyles(scale: number, _isSmallScreen: boolean, isTablet: boolean, screenWidth: number) {
+/**
+ * Crea el StyleSheet global de la tienda.
+ * @param scale Factor 0.78–1.14 según ancho (referencia 390px)
+ * @param isTablet true si ancho ≥ 768 (más columnas en el grid)
+ * @param screenWidth Ancho útil para calcular columnas del catálogo
+ */
+export function createAppStyles(
+  scale: number,
+  _isSmallScreen: boolean,
+  isTablet: boolean,
+  screenWidth: number
+) {
+  // scale: factor 0.78–1.14 según ancho; isTablet ajusta columnas del grid
   return StyleSheet.create({
   actionsRow: {flexDirection: 'row',
     gap: 8,
@@ -102,6 +118,7 @@ export function createAppStyles(scale: number, _isSmallScreen: boolean, isTablet
     gap: 8,
     marginBottom: 14,
   },
+  // Tarjeta de categoría ~31% → ~3 por fila (CategoryGrid)
   categoryCard: {
     backgroundColor: '#151515',
     borderWidth: 1,
@@ -141,6 +158,7 @@ export function createAppStyles(scale: number, _isSmallScreen: boolean, isTablet
   },
   categoryEmojiActive: {transform: [{ scale: 1.05 }],
   },
+  // Filtro de categorías: ~3 tarjetas por fila con flexWrap
   categoryGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
@@ -243,6 +261,7 @@ export function createAppStyles(scale: number, _isSmallScreen: boolean, isTablet
     borderRadius: 14,
   },
   heroButtonText: { color: '#1f1a12', fontWeight: '800', fontSize: Math.round(14 * scale) },
+  // Bloque inicial (HeroSection)
   heroSection: {
     paddingHorizontal: Math.round(16 * scale),
     paddingTop: Math.round(22 * scale),
@@ -285,6 +304,7 @@ export function createAppStyles(scale: number, _isSmallScreen: boolean, isTablet
     justifyContent: 'center',
   },
   menuTriggerText: { color: '#f4d9a8', fontSize: Math.round(16 * scale), marginTop: -1 },
+  // Fondo semitransparente de CartModal y ProductDetailModal
   modalOverlay: {flex: 1, backgroundColor: 'rgba(0,0,0,0.72)', justifyContent: 'flex-end'},
   modalSheet: {backgroundColor: '#12100c', borderTopLeftRadius: Math.round(20 * scale), borderTopRightRadius: Math.round(20 * scale), maxHeight: '92%'},
   navMenuCloseArea: {flex: 1},
@@ -297,6 +317,7 @@ export function createAppStyles(scale: number, _isSmallScreen: boolean, isTablet
     gap: Math.round(6 * scale),
     marginTop: Math.round(8 * scale),
   },
+  // Tarjeta ~48% del ancho → grid de 2 columnas con flexWrap
   productCard: {
     backgroundColor: '#151515',
     borderWidth: 1,
@@ -330,6 +351,7 @@ export function createAppStyles(scale: number, _isSmallScreen: boolean, isTablet
     borderColor: '#efd7b2',
   },
   productImageEmoji: { fontSize: Math.round(32 * scale) },
+  // Contenedor cuadrado de la foto en la tarjeta del catálogo
   productImageMock: {
     width: '100%',
     aspectRatio: 1,
@@ -355,14 +377,19 @@ export function createAppStyles(scale: number, _isSmallScreen: boolean, isTablet
   productsContainer: {paddingBottom: 14,
     gap: 10,
   },
+  // Botón "Quitar" en tarjeta (resta 1 unidad en useCart)
   removeBtn: {backgroundColor: '#85535f', borderRadius: 10, paddingVertical: 10, paddingHorizontal: 16 },
   removeButton: {backgroundColor: '#946066',
   },
+  // Contenedor SafeAreaView en App.tsx
   safeArea: {flex: 1, backgroundColor: '#060606' },
   scroll: {flex: 1 },
+  // Padding inferior base; App suma insets.bottom + espacio del FAB
   scrollContent: {paddingBottom: Math.round(132 * scale) },
+  // Bloque genérico de cada sección (hero, categorías, catálogo, etc.)
   section: { paddingHorizontal: Math.round(16 * scale), paddingTop: Math.round(20 * scale) },
   sectionTitle: { color: '#f4ead8', fontSize: Math.round(18 * scale), fontWeight: '600', marginBottom: Math.round(10 * scale) },
+  // Tarjeta de cada paso en HowToBuySection
   stepCard: {backgroundColor: '#151515',
     borderWidth: 1,
     borderColor: '#2f2a22',
@@ -417,6 +444,7 @@ export function createAppStyles(scale: number, _isSmallScreen: boolean, isTablet
     justifyContent: 'space-between',
     alignItems: 'center',
   },
+  // Barra superior fija (TopNav.tsx)
   topNav: {height: 68,
     paddingHorizontal: 16,
     borderBottomWidth: 1,
@@ -450,6 +478,7 @@ export function createAppStyles(scale: number, _isSmallScreen: boolean, isTablet
   whatsappButtonText: {color: '#fff',
     fontWeight: '700',
   },
+  /* Estilo legacy (no usado); el FAB activo es whatsFab + icono en WhatsAppFab.tsx */
   whatsappFab: {position: 'absolute',
     right: 18,
     bottom: 88,

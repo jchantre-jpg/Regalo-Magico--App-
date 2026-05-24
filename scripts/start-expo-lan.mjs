@@ -1,140 +1,43 @@
 /**
-
- * Arranca Expo en modo LAN y fija REACT_NATIVE_PACKAGER_HOSTNAME a la IPv4
-
- * de la red local (evita que Expo elija 172.x de WSL/Hyper-V y el telefono no conecte).
-
- * Elige un puerto libre (por defecto desde EXPO_PORT o 8085) para no bloquearse en modo no interactivo.
-
+ * Inicia Expo en modo LAN para probar con Expo Go en el celular (misma Wi‑Fi).
+ * Fija REACT_NATIVE_PACKAGER_HOSTNAME con la IPv4 local del PC.
+ *
+ * Uso: npm run start:lan
  */
-
 import { spawn } from 'node:child_process';
-
-import net from 'node:net';
-
 import os from 'node:os';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
+const APP_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
-
-const PREFERRED = Number(process.env.EXPO_PORT) || 8085;
-
-
-
-function pickLanIp() {
-
+/** Obtiene la primera IPv4 no interna (Wi‑Fi o Ethernet). */
+function getLocalIPv4() {
   const nets = os.networkInterfaces();
-
-  const candidates = [];
-
-  for (const name of Object.keys(nets)) {
-
-    for (const i of nets[name] || []) {
-
-      if (i.internal) continue;
-
-      if (i.family !== 'IPv4' && i.family !== 4) continue;
-
-      candidates.push(i.address);
-
+  for (const ifaces of Object.values(nets)) {
+    for (const net of ifaces ?? []) {
+      if (net.family === 'IPv4' && !net.internal) {
+        return net.address;
+      }
     }
-
   }
-
-  const pick = (prefix) => candidates.find((a) => a.startsWith(prefix));
-
-  return (
-
-    pick('192.168.') ||
-
-    pick('10.') ||
-
-    candidates.find((a) => !a.startsWith('172.')) ||
-
-    candidates[0] ||
-
-    '127.0.0.1'
-
-  );
-
+  return '127.0.0.1';
 }
 
+const host = getLocalIPv4();
+console.log(`\nRegalo Mágico — Expo LAN`);
+console.log(`IP local para Expo Go: ${host}`);
+console.log(`Asegúrate de que el celular esté en la misma red Wi‑Fi.\n`);
 
-
-function isPortFree(port) {
-
-  return new Promise((resolve) => {
-
-    const s = net.createServer();
-
-    s.once('error', () => resolve(false));
-
-    s.listen(port, '0.0.0.0', () => {
-
-      s.close(() => resolve(true));
-
-    });
-
-  });
-
-}
-
-
-
-async function pickFreePort(start) {
-
-  for (let p = start; p < start + 40; p++) {
-
-    if (await isPortFree(p)) return p;
-
-  }
-
-  return start;
-
-}
-
-
-
-const ip = pickLanIp();
-
-const port = await pickFreePort(PREFERRED);
-
-const env = { ...process.env, REACT_NATIVE_PACKAGER_HOSTNAME: ip };
-
-
-
-console.log('');
-
-console.log('>>> Expo / telefono misma Wi‑Fi: IP del packager =>', ip);
-
-console.log('>>> En Expo Go escanea o abre: exp://' + ip + ':' + port);
-
-console.log('>>> Si Windows bloquea el puerto, regla firewall TCP entrante ' + port);
-
-if (port !== PREFERRED) {
-
-  console.log('>>> Nota: puerto ' + PREFERRED + ' ocupado; usando ' + port);
-
-}
-
-console.log('');
-
-
-
-const isWin = process.platform === 'win32';
-
-const cmd = isWin ? 'npx.cmd' : 'npx';
-
-const child = spawn(cmd, ['expo', 'start', '--lan', '--clear', '--port', String(port)], {
-
+// -c limpia caché de Metro; REACT_NATIVE_PACKAGER_HOSTNAME fuerza la IP en el QR
+const child = spawn('npx', ['expo', 'start', '--lan', '-c'], {
+  cwd: APP_ROOT,
   stdio: 'inherit',
-
-  shell: isWin,
-
-  env,
-
+  shell: true,
+  env: {
+    ...process.env,
+    REACT_NATIVE_PACKAGER_HOSTNAME: host,
+  },
 });
 
-
-
 child.on('exit', (code) => process.exit(code ?? 0));
-

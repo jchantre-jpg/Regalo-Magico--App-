@@ -457,7 +457,7 @@ export function createAppStyles(
   topNavActions: {flexDirection: 'row', alignItems: 'center', gap: 10 },
   whatsFab: {position: 'absolute',
     right: 18,
-    bottom: 88,
+    bottom: 48,
     width: 64,
     height: 64,
     borderRadius: 32,

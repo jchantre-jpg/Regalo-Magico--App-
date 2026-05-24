@@ -19,7 +19,7 @@ type Props = {
 export function WhatsAppFab({ styles, scale, bottomInset, onPress }: Props) {
   return (
     <Pressable
-      style={[styles.whatsFab, { bottom: Math.round(84 * scale) + bottomInset }]}
+      style={[styles.whatsFab, { bottom: Math.round(44 * scale) + bottomInset }]}
       onPress={onPress}
       accessibilityRole="button"
       accessibilityLabel="Contactar por WhatsApp"

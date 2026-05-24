@@ -14,16 +14,16 @@ import {
   View,
 } from 'react-native';
 
-import { ADMIN_PASSWORD, ADMIN_USERNAME } from '../../lib/admin-config';
+import { ADMIN_PASSWORD, ADMIN_USERNAME } from '../../../backend/lib/admin-config';
 import {
   catalogProductHasPhoto,
   getImageUrisForForm,
   nextProductId,
   type StoreProduct,
-} from '../../lib/admin-merge';
-import type { AdminPersisted, CustomProductRecord, ProductOverride } from '../../lib/admin-storage';
-import { saveAdminData } from '../../lib/admin-storage';
-import type { CatalogProduct } from '../../lib/catalog.generated';
+} from '../../../backend/lib/admin-merge';
+import type { AdminPersisted, CustomProductRecord, ProductOverride } from '../../../database/admin-storage';
+import { saveAdminData } from '../../../database/admin-storage';
+import type { CatalogProduct } from '../../../database/catalog.generated';
 import { ProductImage } from '../common/ProductImage';
 import { AdminProductForm, type CategoryOption, type ProductFormPayload } from './AdminProductForm';
 

@@ -4,10 +4,10 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import * as NavigationBar from 'expo-navigation-bar';
 
-import type { AdminPersisted } from '../../lib/admin-storage';
-import type { CatalogProduct } from '../../lib/catalog.generated';
-import type { StoreProduct } from '../../lib/admin-merge';
-import { formatPriceCOP } from '../../utils/formatPrice';
+import type { AdminPersisted } from '../../../database/admin-storage';
+import type { CatalogProduct } from '../../../database/catalog.generated';
+import type { StoreProduct } from '../../../backend/lib/admin-merge';
+import { formatPriceCOP } from '../../../backend/utils/formatPrice';
 import { AdminPanel } from './AdminPanel';
 
 const ADMIN_BG = '#0a0908';

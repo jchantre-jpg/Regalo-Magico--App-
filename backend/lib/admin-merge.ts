@@ -1,7 +1,7 @@
 import type { ImageSourcePropType } from 'react-native';
 
-import type { AdminPersisted, CustomProductRecord, ProductOverride } from './admin-storage';
-import type { CatalogProduct } from './catalog.generated';
+import type { AdminPersisted, CustomProductRecord, ProductOverride } from '../../database/admin-storage';
+import type { CatalogProduct } from '../../database/catalog.generated';
 
 export type StoreProduct = CatalogProduct & {
   descripcionAdicional?: string;

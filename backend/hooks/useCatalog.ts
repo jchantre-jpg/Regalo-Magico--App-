@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useState } from 'react';
 
 import { mergeCatalog } from '../lib/admin-merge';
-import { emptyAdminPersist, loadAdminData, type AdminPersisted } from '../lib/admin-storage';
+import { emptyAdminPersist, loadAdminData, type AdminPersisted } from '../../database/admin-storage';
 import { resolveCatalogMode } from '../lib/api-config';
 import { fetchCatalogProducts } from '../lib/catalog-api';
-import { PRODUCTOS, type CatalogProduct } from '../lib/catalog.generated';
+import { PRODUCTOS, type CatalogProduct } from '../../database/catalog.generated';
 import { mergeRemoteWithLocalCatalog, resolveCatalogImages, resolveProductImage } from '../lib/product-images';
 
 const remoteCatalogConfig = resolveCatalogMode();

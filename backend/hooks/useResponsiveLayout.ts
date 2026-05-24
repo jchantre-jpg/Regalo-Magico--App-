@@ -4,7 +4,7 @@ import { useWindowDimensions } from 'react-native';
 
 
 
-import { createAppStyles } from '../styles/appStyles';
+import { createAppStyles } from '../../frontend/styles/appStyles';
 
 import { clamp } from '../utils/clamp';
 

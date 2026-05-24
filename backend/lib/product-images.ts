@@ -1,6 +1,6 @@
 import type { ImageSourcePropType } from 'react-native';
 
-import { CATALOG_IMAGE_BASE, PRODUCTOS, type CatalogProduct } from './catalog.generated';
+import { CATALOG_IMAGE_BASE, PRODUCTOS, type CatalogProduct } from '../../database/catalog.generated';
 
 const localById = new Map(PRODUCTOS.map((p) => [p.id, p]));
 const localByArchivo = new Map(PRODUCTOS.map((p) => [p.archivo, p]));

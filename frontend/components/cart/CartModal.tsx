@@ -2,9 +2,9 @@ import { Modal, Pressable, ScrollView, Text, View } from 'react-native';
 
 
 
-import type { CartItem } from '../../types/store';
+import type { CartItem } from '../../../backend/types/store';
 
-import { formatPriceCOP } from '../../utils/formatPrice';
+import { formatPriceCOP } from '../../../backend/utils/formatPrice';
 
 
 

@@ -1,4 +1,4 @@
-import type { CatalogProduct } from './catalog.generated';
+import type { CatalogProduct } from '../../database/catalog.generated';
 
 function asString(v: unknown): string | undefined {
   return typeof v === 'string' && v.trim() ? v.trim() : undefined;

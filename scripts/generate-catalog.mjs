@@ -14,8 +14,8 @@ const APP_ROOT = path.resolve(__dirname, '..');
 const IMAGENES_DIR = path.join(APP_ROOT, '..', 'regalo-magico', 'public', 'imagenes');
 const WEB_CATALOG_TS = path.join(APP_ROOT, '..', 'regalo-magico', 'src', 'data', 'catalog.ts');
 const ASSETS_DIR = path.join(APP_ROOT, 'assets', 'catalog');
-const OUT_FILE = path.join(APP_ROOT, 'lib', 'catalog.generated.ts');
-const OVERRIDES_FILE = path.join(APP_ROOT, 'product-copy-overrides.json');
+const OUT_FILE = path.join(APP_ROOT, 'database', 'catalog.generated.ts');
+const OVERRIDES_FILE = path.join(APP_ROOT, 'database', 'product-copy-overrides.json');
 
 const REMOTE_IMAGE_BASE = 'https://ele5-6.apolobyte.top/imagenes';
 const EXT_RE = /\.(jpe?g|png|webp|avif)$/i;

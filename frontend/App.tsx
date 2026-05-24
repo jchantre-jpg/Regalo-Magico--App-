@@ -32,17 +32,17 @@ import { WhatsAppFab } from './components/layout/WhatsAppFab';
 
 import { ProductDetailModal } from './components/product/ProductDetailModal';
 
-import { useCart } from './hooks/useCart';
+import { useCart } from '../backend/hooks/useCart';
 
-import { useCatalog } from './hooks/useCatalog';
+import { useCatalog } from '../backend/hooks/useCatalog';
 
-import { useResponsiveLayout } from './hooks/useResponsiveLayout';
+import { useResponsiveLayout } from '../backend/hooks/useResponsiveLayout';
 
-import { useSectionScroll } from './hooks/useSectionScroll';
+import { useSectionScroll } from '../backend/hooks/useSectionScroll';
 
-import { useWhatsApp } from './hooks/useWhatsApp';
+import { useWhatsApp } from '../backend/hooks/useWhatsApp';
 
-import type { Product } from './types/store';
+import type { Product } from '../backend/types/store';
 
 
 
@@ -236,7 +236,7 @@ export default function App() {
 
               setCategoriaActiva(id);
 
-              scrollToSection('productos');
+                  scrollToSection('productos');
 
             }}
 
@@ -342,13 +342,13 @@ export default function App() {
 
     <AdminModal
       styles={styles}
-      visible={adminVisible}
-      scale={scale}
+              visible={adminVisible}
+              scale={scale}
       whatsappNumber={whatsappNumber}
-      baseCatalog={catalogBase}
-      products={productosCatalogo}
-      persist={adminPersist}
-      onPersistChange={setAdminPersist}
+              baseCatalog={catalogBase}
+              products={productosCatalogo}
+              persist={adminPersist}
+              onPersistChange={setAdminPersist}
       onClose={() => setAdminVisible(false)}
     />
 

@@ -2,7 +2,7 @@ import { Pressable, Text, View } from 'react-native';
 
 
 
-import { CATEGORIAS } from '../../constants/categories';
+import { CATEGORIAS } from '../../../backend/constants/categories';
 
 
 

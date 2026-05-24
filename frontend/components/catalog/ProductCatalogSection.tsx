@@ -1,8 +1,8 @@
 import { Pressable, Text, View } from 'react-native';
 
 import { ProductImage } from '../common/ProductImage';
-import type { Product } from '../../types/store';
-import { formatPriceCOP } from '../../utils/formatPrice';
+import type { Product } from '../../../backend/types/store';
+import { formatPriceCOP } from '../../../backend/utils/formatPrice';
 
 type Props = {
   styles: Record<string, object>;

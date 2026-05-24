@@ -13,18 +13,26 @@ npm run start:lan
 
 Escanea el QR con **Expo Go** (misma red Wi‑Fi que el PC).
 
-## Estructura
+## Estructura del proyecto
 
 ```
-├── App.tsx                 # Pantalla principal
-├── components/             # UI por sección
-├── hooks/                  # Carrito, catálogo, layout, scroll
-├── lib/                    # API, catálogo, admin
-├── constants/
-├── types/
-├── styles/
-└── utils/
+regalo-magico-app/
+├── frontend/      # UI (componentes, estilos, App.tsx)
+├── backend/       # Lógica (hooks, API, utils, types)
+├── database/      # Datos locales (AsyncStorage, catálogo)
+├── docs/          # Documentación
+├── scripts/       # Scripts npm
+└── assets/        # Imágenes Expo
 ```
+
+| Carpeta | Descripción |
+|---------|-------------|
+| [frontend/](./frontend/) | Pantallas y componentes React Native |
+| [backend/](./backend/) | Custom hooks, servicios, utilidades |
+| [database/](./database/) | Persistencia y catálogo empaquetado |
+| [docs/](./docs/) | Estructura y material de clases |
+
+Más detalle: [docs/ESTRUCTURA-CARPETAS.md](./docs/ESTRUCTURA-CARPETAS.md)
 
 ## Catálogo
 
@@ -32,11 +40,16 @@ Escanea el QR con **Expo Go** (misma red Wi‑Fi que el PC).
 npm run generate-catalog
 ```
 
-- Copia todas las fotos de `../regalo-magico/public/imagenes` a `assets/catalog/`
-- Usa **título, precio, categoría y descripción** de `../regalo-magico/src/data/catalog.ts` (igual que la web)
-- Genera `lib/catalog.generated.ts` con imágenes empaquetadas (funciona sin internet)
-- Ajustes extra por archivo: `product-copy-overrides.json`
+- Copia fotos de `../regalo-magico/public/imagenes` → `assets/catalog/`
+- Metadatos desde `../regalo-magico/src/data/catalog.ts`
+- Genera `database/catalog.generated.ts`
+- Ajustes de texto: `database/product-copy-overrides.json`
 
 ## Variables de entorno (opcional)
 
 Copia `.env.example` a `.env` si usas catálogo remoto.
+
+## Documentación
+
+- [Estructura de carpetas](./docs/ESTRUCTURA-CARPETAS.md)
+- [Uso del material de clases](./docs/uso-de-material-de-clases.md)

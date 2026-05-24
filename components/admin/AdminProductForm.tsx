@@ -1,6 +1,8 @@
 import * as ImagePicker from 'expo-image-picker';
+import { Image } from 'expo-image';
 import { useMemo, useState } from 'react';
 import {
+  ActivityIndicator,
   Alert,
   Modal,
   Pressable,
@@ -29,13 +31,23 @@ type Props = {
   title: string;
   categories: CategoryOption[];
   initial: ProductFormPayload;
+  /** Si false, permite guardar sin fotos nuevas (producto del catalogo con imagen empaquetada). */
+  requirePhotos?: boolean;
   onSave: (payload: ProductFormPayload) => void;
   onCancel: () => void;
 };
 
 const MAX_PHOTOS = 5;
 
-export function AdminProductForm({ scale, title, categories, initial, onSave, onCancel }: Props) {
+export function AdminProductForm({
+  scale,
+  title,
+  categories,
+  initial,
+  requirePhotos = true,
+  onSave,
+  onCancel,
+}: Props) {
   const styles = useMemo(() => createStyles(scale), [scale]);
   const [nombre, setNombre] = useState(initial.nombre);
   const [categoria, setCategoria] = useState(initial.categoria);
@@ -46,6 +58,7 @@ export function AdminProductForm({ scale, title, categories, initial, onSave, on
   const [emoji, setEmoji] = useState(initial.emoji || '✨');
   const [imageUris, setImageUris] = useState<string[]>(initial.imageUris);
   const [catModal, setCatModal] = useState(false);
+  const [saving, setSaving] = useState(false);
 
   const pickImages = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -70,6 +83,8 @@ export function AdminProductForm({ scale, title, categories, initial, onSave, on
   };
 
   const submit = () => {
+    if (saving) return;
+
     const n = nombre.trim();
     if (!n) {
       Alert.alert('Falta el nombre', 'Indica el nombre del producto.');
@@ -91,20 +106,26 @@ export function AdminProductForm({ scale, title, categories, initial, onSave, on
       Alert.alert('Contenido del detalle', 'Describe el contenido (items y cantidades).');
       return;
     }
-    if (imageUris.length === 0) {
+    if (requirePhotos && imageUris.length === 0) {
       Alert.alert('Fotos', 'Agrega al menos una foto del producto.');
       return;
     }
-    onSave({
-      nombre: n,
-      categoria,
-      precio: p,
-      stock: stockNum,
-      descripcion: det,
-      descripcionAdicional: descripcionAdicional.trim(),
-      emoji: emoji.trim() || '✨',
-      imageUris: [...imageUris],
-    });
+
+    setSaving(true);
+    try {
+      onSave({
+        nombre: n,
+        categoria,
+        precio: p,
+        stock: stockNum,
+        descripcion: det,
+        descripcionAdicional: descripcionAdicional.trim(),
+        emoji: emoji.trim() || '✨',
+        imageUris: [...imageUris],
+      });
+    } finally {
+      setSaving(false);
+    }
   };
 
   const catLabel = categories.find((c) => c.id === categoria)?.label ?? 'Seleccionar...';
@@ -185,8 +206,14 @@ export function AdminProductForm({ scale, title, categories, initial, onSave, on
           multiline
         />
 
-        <Text style={styles.label}>Fotos del producto * (max. {MAX_PHOTOS})</Text>
-        <Text style={styles.hint}>La primera foto es la principal. JPG/PNG desde tu galeria.</Text>
+        <Text style={styles.label}>
+          Fotos del producto {requirePhotos ? '*' : ''} (max. {MAX_PHOTOS})
+        </Text>
+        <Text style={styles.hint}>
+          {requirePhotos
+            ? 'La primera foto es la principal. JPG/PNG desde tu galeria.'
+            : 'Este producto ya tiene foto del catalogo. Agrega nuevas solo si quieres cambiarla.'}
+        </Text>
         <Pressable style={styles.dropZone} onPress={pickImages}>
           <Text style={styles.dropZoneText}>Toca para elegir imagenes</Text>
           <Text style={styles.dropZoneSub}>Hasta {MAX_PHOTOS} fotos</Text>
@@ -195,6 +222,7 @@ export function AdminProductForm({ scale, title, categories, initial, onSave, on
           <View style={styles.thumbRow}>
             {imageUris.map((uri, i) => (
               <View key={`${uri}-${i}`} style={styles.thumbWrap}>
+                <Image source={{ uri }} style={styles.thumbImg} contentFit="cover" />
                 <Pressable onPress={() => removePhoto(i)} style={styles.thumbRemove}>
                   <Text style={styles.thumbRemoveText}>✕</Text>
                 </Pressable>
@@ -208,8 +236,12 @@ export function AdminProductForm({ scale, title, categories, initial, onSave, on
           <Pressable style={styles.btnOutline} onPress={onCancel}>
             <Text style={styles.btnOutlineText}>Cancelar</Text>
           </Pressable>
-          <Pressable style={styles.btnSolid} onPress={submit}>
-            <Text style={styles.btnSolidText}>Guardar producto</Text>
+          <Pressable style={[styles.btnSolid, saving && styles.btnDisabled]} onPress={submit} disabled={saving}>
+            {saving ? (
+              <ActivityIndicator color="#1a150e" />
+            ) : (
+              <Text style={styles.btnSolidText}>Guardar producto</Text>
+            )}
           </Pressable>
         </View>
         <View style={{ height: 28 }} />
@@ -307,9 +339,8 @@ function createStyles(scale: number) {
       borderWidth: 1,
       borderColor: '#3d3427',
       overflow: 'hidden',
-      justifyContent: 'center',
-      alignItems: 'center',
     },
+    thumbImg: { width: '100%', height: '100%' },
     thumbRemove: {
       ...StyleSheet.absoluteFillObject,
       backgroundColor: 'rgba(0,0,0,0.55)',
@@ -336,6 +367,7 @@ function createStyles(scale: number) {
       alignItems: 'center',
     },
     btnSolidText: { color: '#1a150e', fontWeight: '800', fontSize: r(15) },
+    btnDisabled: { opacity: 0.65 },
     catOverlay: {
       flex: 1,
       backgroundColor: 'rgba(0,0,0,0.55)',

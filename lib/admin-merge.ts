@@ -11,7 +11,7 @@ export type StoreProduct = CatalogProduct & {
   imageUris?: string[];
 };
 
-function isBundledSource(img: ImageSourcePropType): boolean {
+export function isBundledSource(img: ImageSourcePropType): boolean {
   return typeof img === 'number';
 }
 
@@ -36,8 +36,17 @@ function mergeOne(p: CatalogProduct, o: ProductOverride | undefined): StoreProdu
     return uris ? { ...p, imageUris: uris } : { ...p };
   }
   const imageUris =
-    o.imageUris?.length ? o.imageUris : isUriSource(p.image) ? [p.image.uri] : undefined;
-  const image = imageUris?.[0] != null ? { uri: imageUris[0] } : p.image;
+    o.imageUris && o.imageUris.length > 0
+      ? o.imageUris
+      : isUriSource(p.image)
+        ? [p.image.uri]
+        : undefined;
+  const image =
+    imageUris?.[0] != null
+      ? { uri: imageUris[0] }
+      : isBundledSource(p.image)
+        ? p.image
+        : p.image;
   return {
     ...p,
     nombre: o.nombre ?? p.nombre,
@@ -72,12 +81,23 @@ function customToStore(c: CustomProductRecord): StoreProduct {
 }
 
 export function nextProductId(base: CatalogProduct[], data: AdminPersisted): number {
-  const ids = [...base.map((p) => p.id), ...data.customProducts.map((c) => c.id)];
+  const ids = [
+    ...base.map((p) => p.id),
+    ...data.customProducts.map((c) => c.id),
+    ...data.deletedIds,
+  ];
   return ids.length === 0 ? 1 : Math.max(...ids) + 1;
 }
 
 export function getImageUrisForForm(product: StoreProduct, override: ProductOverride | undefined): string[] {
   if (override?.imageUris?.length) return override.imageUris;
+  if (product.imageUris?.length) return product.imageUris;
   if (isUriSource(product.image)) return [product.image.uri];
   return [];
+}
+
+export function catalogProductHasPhoto(product: StoreProduct): boolean {
+  if (product.imageUris?.length) return true;
+  if (isUriSource(product.image)) return true;
+  return isBundledSource(product.image);
 }

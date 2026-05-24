@@ -15,7 +15,12 @@ import {
 } from 'react-native';
 
 import { ADMIN_PASSWORD, ADMIN_USERNAME } from '../../lib/admin-config';
-import { getImageUrisForForm, nextProductId, type StoreProduct } from '../../lib/admin-merge';
+import {
+  catalogProductHasPhoto,
+  getImageUrisForForm,
+  nextProductId,
+  type StoreProduct,
+} from '../../lib/admin-merge';
 import type { AdminPersisted, CustomProductRecord, ProductOverride } from '../../lib/admin-storage';
 import { saveAdminData } from '../../lib/admin-storage';
 import type { CatalogProduct } from '../../lib/catalog.generated';
@@ -50,7 +55,8 @@ const FORM_CATEGORIES: CategoryOption[] = [
 ];
 
 function payloadToOverride(p: ProductFormPayload): ProductOverride {
-  return {
+  const uris = p.imageUris.filter(Boolean);
+  const o: ProductOverride = {
     nombre: p.nombre,
     categoria: p.categoria,
     precio: p.precio,
@@ -58,8 +64,9 @@ function payloadToOverride(p: ProductFormPayload): ProductOverride {
     descripcion: p.descripcion,
     descripcionAdicional: p.descripcionAdicional,
     stock: p.stock,
-    imageUris: p.imageUris,
   };
+  if (uris.length > 0) o.imageUris = uris;
+  return o;
 }
 
 function payloadToCustom(id: number, p: ProductFormPayload): CustomProductRecord {
@@ -72,7 +79,7 @@ function payloadToCustom(id: number, p: ProductFormPayload): CustomProductRecord
     descripcion: p.descripcion,
     descripcionAdicional: p.descripcionAdicional,
     stock: p.stock,
-    imageUris: p.imageUris,
+    imageUris: p.imageUris.filter(Boolean),
   };
 }
 
@@ -157,38 +164,61 @@ export function AdminPanel({
 
   const saveForm = async (payload: ProductFormPayload) => {
     if (!formTarget) return;
-    if (formTarget.kind === 'create') {
-      const id = nextProductId(baseCatalog, persist);
-      const rec = payloadToCustom(id, payload);
+
+    const isCreate = formTarget.kind === 'create';
+    const name = payload.nombre.trim();
+
+    try {
+      if (isCreate) {
+        if (payload.imageUris.filter(Boolean).length === 0) {
+          Alert.alert('Fotos', 'Agrega al menos una foto del producto nuevo.');
+          return;
+        }
+        const id = nextProductId(baseCatalog, persist);
+        const rec = payloadToCustom(id, payload);
+        const next: AdminPersisted = {
+          ...persist,
+          customProducts: [...persist.customProducts, rec],
+        };
+        await applyPersist(next);
+        cancelForm();
+        Alert.alert('Guardado', `"${name}" se agrego al catalogo.`);
+        return;
+      }
+
+      const { product, isCustom } = formTarget;
+      if (isCustom) {
+        if (payload.imageUris.filter(Boolean).length === 0) {
+          Alert.alert('Fotos', 'El producto debe tener al menos una foto.');
+          return;
+        }
+        const next: AdminPersisted = {
+          ...persist,
+          customProducts: persist.customProducts.map((c) =>
+            c.id === product.id ? payloadToCustom(product.id, payload) : c
+          ),
+        };
+        await applyPersist(next);
+        cancelForm();
+        Alert.alert('Guardado', `Cambios en "${name}" guardados.`);
+        return;
+      }
+
+      const prev = persist.overrides[String(product.id)];
+      const o = payloadToOverride(payload);
       const next: AdminPersisted = {
         ...persist,
-        customProducts: [...persist.customProducts, rec],
+        overrides: {
+          ...persist.overrides,
+          [String(product.id)]: { ...prev, ...o },
+        },
       };
       await applyPersist(next);
       cancelForm();
-      return;
+      Alert.alert('Guardado', `Cambios en "${name}" guardados.`);
+    } catch {
+      Alert.alert('Error al guardar', 'No se pudieron guardar los cambios. Intenta de nuevo.');
     }
-
-    const { product, isCustom } = formTarget;
-    if (isCustom) {
-      const next: AdminPersisted = {
-        ...persist,
-        customProducts: persist.customProducts.map((c) =>
-          c.id === product.id ? payloadToCustom(product.id, payload) : c
-        ),
-      };
-      await applyPersist(next);
-      cancelForm();
-      return;
-    }
-
-    const o = payloadToOverride(payload);
-    const next: AdminPersisted = {
-      ...persist,
-      overrides: { ...persist.overrides, [String(product.id)]: { ...persist.overrides[String(product.id)], ...o } },
-    };
-    await applyPersist(next);
-    cancelForm();
   };
 
   const confirmDelete = (product: StoreProduct) => {
@@ -279,6 +309,11 @@ export function AdminPanel({
   const keyboardOffset = Platform.OS === 'ios' ? 64 : 0;
 
   if (phase === 'form' && formTarget) {
+    const requirePhotos =
+      formTarget.kind === 'create' ||
+      formTarget.isCustom ||
+      !catalogProductHasPhoto(formTarget.product);
+
     return (
       <KeyboardAvoidingView style={styles.flex1} behavior={Platform.OS === 'ios' ? 'padding' : undefined} keyboardVerticalOffset={keyboardOffset}>
         <AdminProductForm
@@ -287,6 +322,7 @@ export function AdminPanel({
           title={formTarget.kind === 'create' ? 'Nuevo producto' : 'Editar producto'}
           categories={FORM_CATEGORIES}
           initial={initialFormPayload(formTarget)}
+          requirePhotos={requirePhotos}
           onSave={(p) => void saveForm(p)}
           onCancel={cancelForm}
         />
